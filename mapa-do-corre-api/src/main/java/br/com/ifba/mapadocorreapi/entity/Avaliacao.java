@@ -1,15 +1,19 @@
+package br.com.ifba.mapadocorreapi.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+import java.util.Date;
+
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Setter
 @Entity
-public class Postagem {
+public class Avaliacao {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    private String conteudo;
-    private String imagem;
+    private Integer nota;
     private Date criadoEm;
     private String comentario;
 

@@ -1,3 +1,7 @@
+package br.com.ifba.mapadocorreapi.entity;
+import jakarta.persistence.*;
+import lombok.*;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

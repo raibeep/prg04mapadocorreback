@@ -20,14 +20,14 @@ O back-end do **Mapa do Corre** é responsável por toda a lógica de negócio d
 
 | Entidade | Descrição |
 |---|---|
-| `Usuario` | Pessoa cadastrada na plataforma, consumidor ou dono de negócio |
-| `Negocio` | Estabelecimento cadastrado por um usuário |
-| `Endereco` | Localização de um negócio |
-| `Categoria` | Classificação temática dos negócios |
-| `Postagem` | Conteúdo publicado no feed por um usuário |
-| `Comentario` | Resposta de um usuário a uma postagem |
-| `Avaliacao` | Nota e comentário atribuídos a um negócio |
-| `Seguidor` | Relação de seguir entre dois usuários |
+| `br.com.ifba.mapadocorreapi.entity.Usuario` | Pessoa cadastrada na plataforma, consumidor ou dono de negócio |
+| `br.com.ifba.mapadocorreapi.entity.Negocio` | Estabelecimento cadastrado por um usuário |
+| `br.com.ifba.mapadocorreapi.entity.Endereco` | Localização de um negócio |
+| `br.com.ifba.mapadocorreapi.entity.Categoria` | Classificação temática dos negócios |
+| `br.com.ifba.mapadocorreapi.entity.Postagem` | Conteúdo publicado no feed por um usuário |
+| `br.com.ifba.mapadocorreapi.entity.Comentario` | Resposta de um usuário a uma postagem |
+| `br.com.ifba.mapadocorreapi.entity.Avaliacao` | Nota e comentário atribuídos a um negócio |
+| `br.com.ifba.mapadocorreapi.entity.Seguidor` | Relação de seguir entre dois usuários |
 
 ---
 
@@ -35,14 +35,14 @@ O back-end do **Mapa do Corre** é responsável por toda a lógica de negócio d
 
 | Relacionamento | Cardinalidade |
 |---|---|
-| Usuario → Negocio | 1 para N |
-| Negocio → Endereco | 1 para 1 |
-| Negocio → Categoria | N para 1 |
-| Usuario → Postagem | 1 para N |
-| Negocio → Postagem | 1 para N |
-| Postagem → Comentario | 1 para N |
-| Negocio → Avaliacao | 1 para N |
-| Usuario → Seguidor | N para N |
+| br.com.ifba.mapadocorreapi.entity.Usuario → br.com.ifba.mapadocorreapi.entity.Negocio | 1 para N |
+| br.com.ifba.mapadocorreapi.entity.Negocio → br.com.ifba.mapadocorreapi.entity.Endereco | 1 para 1 |
+| br.com.ifba.mapadocorreapi.entity.Negocio → br.com.ifba.mapadocorreapi.entity.Categoria | N para 1 |
+| br.com.ifba.mapadocorreapi.entity.Usuario → br.com.ifba.mapadocorreapi.entity.Postagem | 1 para N |
+| br.com.ifba.mapadocorreapi.entity.Negocio → br.com.ifba.mapadocorreapi.entity.Postagem | 1 para N |
+| br.com.ifba.mapadocorreapi.entity.Postagem → br.com.ifba.mapadocorreapi.entity.Comentario | 1 para N |
+| br.com.ifba.mapadocorreapi.entity.Negocio → br.com.ifba.mapadocorreapi.entity.Avaliacao | 1 para N |
+| br.com.ifba.mapadocorreapi.entity.Usuario → br.com.ifba.mapadocorreapi.entity.Seguidor | N para N |
 
 ---
 

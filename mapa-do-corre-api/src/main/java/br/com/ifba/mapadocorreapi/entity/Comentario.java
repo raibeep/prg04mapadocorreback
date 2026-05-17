@@ -1,3 +1,8 @@
+package br.com.ifba.mapadocorreapi.entity;
+import jakarta.persistence.*;
+import lombok.*;
+import java.util.Date;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -10,7 +15,6 @@ public class Comentario {
 
     private String texto;
     private Date criadoEm;
-
     @ManyToOne
     @JoinColumn(name = "autor_id")
     private Usuario autor;
