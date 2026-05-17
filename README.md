@@ -108,7 +108,7 @@ O back-end do **Mapa do Corre** é responsável por toda a lógica de negócio d
         │   ├── 📂 controller      # Endpoints REST
         │   ├── 📂 service         # Regras de negócio
         │   ├── 📂 repository      # Acesso ao banco de dados
-        │   ├── 📂 model           # Entidades (classes do diagrama)
+        │   ├── 📂 entity           # Entidades (classes do diagrama)
         │   └── 📄 Application.java
         └── 📂 resources
             └── 📄 application.properties
