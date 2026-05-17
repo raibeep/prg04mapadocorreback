@@ -47,34 +47,55 @@ O back-end do **Mapa do Corre** é responsável por toda a lógica de negócio d
 ---
 
 ## 🛣️ Rotas previstas
-AUTH
-POST   /auth/login
-POST   /auth/cadastro
-USUARIOS
-GET    /usuarios/:id
-PUT    /usuarios/:id
-DELETE /usuarios/:id
-NEGOCIOS
-GET    /negocios
-GET    /negocios/:id
-POST   /negocios
-PUT    /negocios/:id
-DELETE /negocios/:id
-POSTAGENS
-GET    /postagens/feed
-GET    /postagens/:id
-POST   /postagens
-DELETE /postagens/:id
-COMENTARIOS
-GET    /postagens/:id/comentarios
-POST   /postagens/:id/comentarios
-DELETE /comentarios/:id
-AVALIACOES
-GET    /negocios/:id/avaliacoes
-POST   /negocios/:id/avaliacoes
-SEGUIDORES
-POST   /usuarios/:id/seguir
-DELETE /usuarios/:id/seguir
+
+### 🔐 Auth
+| Método | Rota | Descrição |
+|---|---|---|
+| `POST` | `/auth/login` | Login do usuário |
+| `POST` | `/auth/cadastro` | Cadastro de novo usuário |
+
+### 👤 Usuários
+| Método | Rota | Descrição |
+|---|---|---|
+| `GET` | `/usuarios/:id` | Buscar usuário por ID |
+| `PUT` | `/usuarios/:id` | Atualizar usuário |
+| `DELETE` | `/usuarios/:id` | Deletar usuário |
+
+### 🏪 Negócios
+| Método | Rota | Descrição |
+|---|---|---|
+| `GET` | `/negocios` | Listar todos os negócios |
+| `GET` | `/negocios/:id` | Buscar negócio por ID |
+| `POST` | `/negocios` | Cadastrar negócio |
+| `PUT` | `/negocios/:id` | Atualizar negócio |
+| `DELETE` | `/negocios/:id` | Deletar negócio |
+
+### 📰 Postagens
+| Método | Rota | Descrição |
+|---|---|---|
+| `GET` | `/postagens/feed` | Feed personalizado |
+| `GET` | `/postagens/:id` | Buscar postagem por ID |
+| `POST` | `/postagens` | Criar postagem |
+| `DELETE` | `/postagens/:id` | Deletar postagem |
+
+### 💬 Comentários
+| Método | Rota | Descrição |
+|---|---|---|
+| `GET` | `/postagens/:id/comentarios` | Listar comentários |
+| `POST` | `/postagens/:id/comentarios` | Comentar em postagem |
+| `DELETE` | `/comentarios/:id` | Deletar comentário |
+
+### ⭐ Avaliações
+| Método | Rota | Descrição |
+|---|---|---|
+| `GET` | `/negocios/:id/avaliacoes` | Listar avaliações |
+| `POST` | `/negocios/:id/avaliacoes` | Avaliar negócio |
+
+### 👥 Seguidores
+| Método | Rota | Descrição |
+|---|---|---|
+| `POST` | `/usuarios/:id/seguir` | Seguir usuário |
+| `DELETE` | `/usuarios/:id/seguir` | Deixar de seguir |
 ---
 
 ## 🏗️ Estrutura do Projeto
@@ -103,7 +124,7 @@ DELETE /usuarios/:id/seguir
 
 ## 🔗 Repositório Front-end
 
-> [mapa-do-corre (front-end)](https://github.com/raibeep/prg04webraikaverena)
+> [mapa-do-corre (front-end)](https://github.com/raibeep/prg04mapadocorrefront)
 
 ---
 
