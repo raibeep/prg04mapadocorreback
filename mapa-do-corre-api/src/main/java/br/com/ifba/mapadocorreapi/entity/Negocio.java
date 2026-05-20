@@ -11,7 +11,7 @@ import java.util.Date;
 public class Negocio {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private Long id;
 
     private String nome;
     private String descricao;

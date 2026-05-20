@@ -11,7 +11,7 @@ import java.util.Date;
 public class Avaliacao {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private Long id;
 
     private Integer nota;
     private Date criadoEm;
