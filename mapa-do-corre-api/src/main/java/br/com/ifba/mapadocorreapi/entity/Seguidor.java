@@ -10,7 +10,7 @@ import java.util.Date;
 @Entity
 public class Seguidor {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Date seguidoEm;

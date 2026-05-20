@@ -9,7 +9,7 @@ import lombok.*;
 @Entity
 public class Endereco {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String rua;
