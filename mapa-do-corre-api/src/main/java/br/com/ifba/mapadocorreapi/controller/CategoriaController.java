@@ -3,9 +3,11 @@ package br.com.ifba.mapadocorreapi.controller;
 import br.com.ifba.mapadocorreapi.entity.Categoria;
 import br.com.ifba.mapadocorreapi.service.CategoriaIService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 /*
  * @RestController
  * Diz ao Spring que essa classe é um controller REST.
@@ -15,6 +17,7 @@ import java.util.List;
  * e devolver respostas em JSON.
  */
 @RestController
+
 /*
  * @RequestMapping("/categorias")
  *
@@ -30,7 +33,8 @@ import java.util.List;
  */
 @RequestMapping("/categorias")
 @RequiredArgsConstructor
-public class CategoriaController implements CategoriaIController{
+public class CategoriaController implements CategoriaIController {
+
     private final CategoriaIService categoriaService;
 
     /*
@@ -43,9 +47,15 @@ public class CategoriaController implements CategoriaIController{
      * URL:
      * POST /categorias
      */
-    @PostMapping
-    public Categoria save(@RequestBody Categoria categoria){//@RequestBody pega o JSON enviado pelo cliente e transforma em objeto java
-        return categoriaService.save(categoria);
+    @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<?> save(@RequestBody Categoria categoria) {
+
+        //@RequestBody pega o JSON enviado pelo cliente
+        //e transforma em objeto Java
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(categoriaService.save(categoria));
     }
 
     /*
@@ -58,14 +68,15 @@ public class CategoriaController implements CategoriaIController{
      * URL:
      * GET /categorias
      */
-    @GetMapping
-    public List<Categoria> listCategorias() {
-        return categoriaService.listCategorias();
+    @GetMapping(path = "/findall")
+    public ResponseEntity<?> findAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(categoriaService.findAll());
     }
 
-    @GetMapping("/{id}")//irá buscar pelo id
-    public Categoria findById(@PathVariable String id){
-        return categoriaService.findById(id);
+    @GetMapping("/{id}") //irá buscar pelo id
+    public ResponseEntity<?> findById(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(categoriaService.findById(id));
     }
 
     /*
@@ -78,13 +89,19 @@ public class CategoriaController implements CategoriaIController{
      * Exemplo:
      * PUT /categorias/10
      */
-    @PutMapping("/{id}")
-    public Categoria updateCategoria(@PathVariable String id, @RequestBody Categoria categoria) {
-        return categoriaService.updateCategoria(id,categoria);
+    @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<?> updateCategoria(@PathVariable Long id, @RequestBody Categoria categoria) {
+        categoriaService.updateCategoria(id, categoria);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("/{id}")//o nome já é bem sugestivo, ele é responsável por deletar dados
-    public void deleteCategoria(@PathVariable String id){
+    @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    //o nome já é bem sugestivo,
+    //ele é responsável por deletar dados
+    public void deleteCategoria(@PathVariable Long id) {
         categoriaService.deleteCategoria(id);
     }
 }
