@@ -26,13 +26,12 @@ public class CategoriaService implements CategoriaIService {
                     "Dados de Categoria não preenchidos"
             );
 
-        } else if (categoria.getId() != null) {
+        } else if (categoriaRepository.findByNome(categoria.getNome()).isPresent()) {
 
             throw new RuntimeException(
-                    "Categoria já existente no Banco de Dados"
+                    "Categoria já cadastrada"
             );
-
-        } else {
+        }else {
 
             log.info("Salvando o objeto Categoria");
 
