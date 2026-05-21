@@ -1,4 +1,5 @@
-package br.com.ifba.mapadocorreapi.entity;
+package br.com.ifba.mapadocorreapi.seguidor.entity;
+import br.com.ifba.mapadocorreapi.usuario.entity.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.Date;

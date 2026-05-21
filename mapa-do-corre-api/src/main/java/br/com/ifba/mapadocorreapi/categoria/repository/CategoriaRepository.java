@@ -1,6 +1,6 @@
-package br.com.ifba.mapadocorreapi.repository;
+package br.com.ifba.mapadocorreapi.categoria.repository;
 
-import br.com.ifba.mapadocorreapi.entity.Categoria;
+import br.com.ifba.mapadocorreapi.categoria.entity.Categoria;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

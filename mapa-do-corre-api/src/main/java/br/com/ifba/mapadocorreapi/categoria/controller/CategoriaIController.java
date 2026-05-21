@@ -1,6 +1,6 @@
-package br.com.ifba.mapadocorreapi.controller;
+package br.com.ifba.mapadocorreapi.categoria.controller;
 
-import br.com.ifba.mapadocorreapi.entity.Categoria;
+import br.com.ifba.mapadocorreapi.categoria.entity.Categoria;
 import org.springframework.http.ResponseEntity;
 
 public interface CategoriaIController {

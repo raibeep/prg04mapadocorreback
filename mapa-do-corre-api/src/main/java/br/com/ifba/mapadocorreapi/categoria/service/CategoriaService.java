@@ -1,7 +1,7 @@
-package br.com.ifba.mapadocorreapi.service;
+package br.com.ifba.mapadocorreapi.categoria.service;
 
-import br.com.ifba.mapadocorreapi.entity.Categoria;
-import br.com.ifba.mapadocorreapi.repository.CategoriaRepository;
+import br.com.ifba.mapadocorreapi.categoria.entity.Categoria;
+import br.com.ifba.mapadocorreapi.categoria.repository.CategoriaRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

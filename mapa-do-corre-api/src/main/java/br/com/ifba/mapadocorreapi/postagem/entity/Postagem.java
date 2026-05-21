@@ -1,19 +1,22 @@
-package br.com.ifba.mapadocorreapi.entity;
-
+package br.com.ifba.mapadocorreapi.postagem.entity;
+import br.com.ifba.mapadocorreapi.usuario.entity.Usuario;
+import br.com.ifba.mapadocorreapi.negocio.entity.Negocio;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 @Setter
 @Entity
-public class Avaliacao {
+public class Postagem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer nota;
+    private String conteudo;
+    private String imagem;
     private Date criadoEm;
     private String comentario;
 

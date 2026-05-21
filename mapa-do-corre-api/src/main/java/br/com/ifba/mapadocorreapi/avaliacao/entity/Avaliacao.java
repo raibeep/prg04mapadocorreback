@@ -1,25 +1,29 @@
-package br.com.ifba.mapadocorreapi.entity;
+package br.com.ifba.mapadocorreapi.avaliacao.entity;
+
+import br.com.ifba.mapadocorreapi.negocio.entity.Negocio;
+import br.com.ifba.mapadocorreapi.usuario.entity.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.Date;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Setter
 @Entity
-public class Comentario {
+public class Avaliacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String texto;
+    private Integer nota;
     private Date criadoEm;
+    private String comentario;
+
     @ManyToOne
     @JoinColumn(name = "autor_id")
     private Usuario autor;
 
     @ManyToOne
-    @JoinColumn(name = "postagem_id")
-    private Postagem postagem;
+    @JoinColumn(name = "negocio_id")
+    private Negocio negocio;
 }

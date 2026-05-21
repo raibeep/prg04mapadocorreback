@@ -1,4 +1,5 @@
-package br.com.ifba.mapadocorreapi.entity;
+package br.com.ifba.mapadocorreapi.endereco.entity;
+import br.com.ifba.mapadocorreapi.negocio.entity.Negocio;
 import jakarta.persistence.*;
 import lombok.*;
 

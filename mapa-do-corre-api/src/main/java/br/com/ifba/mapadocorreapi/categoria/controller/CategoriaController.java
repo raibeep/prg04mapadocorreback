@@ -1,7 +1,7 @@
-package br.com.ifba.mapadocorreapi.controller;
+package br.com.ifba.mapadocorreapi.categoria.controller;
 
-import br.com.ifba.mapadocorreapi.entity.Categoria;
-import br.com.ifba.mapadocorreapi.service.CategoriaIService;
+import br.com.ifba.mapadocorreapi.categoria.entity.Categoria;
+import br.com.ifba.mapadocorreapi.categoria.service.CategoriaIService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
