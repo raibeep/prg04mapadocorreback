@@ -1,7 +1,10 @@
 package br.com.ifba.mapadocorreapi.categoria.controller;
 
+import br.com.ifba.mapadocorreapi.categoria.dto.CategoriaGetResponseDto;
+import br.com.ifba.mapadocorreapi.categoria.dto.CategoriaPostRequestDto;
 import br.com.ifba.mapadocorreapi.categoria.entity.Categoria;
 import br.com.ifba.mapadocorreapi.categoria.service.CategoriaIService;
+import br.com.ifba.mapadocorreapi.infrastructure.mapper.ObjectMapperUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,6 +39,7 @@ import org.springframework.web.bind.annotation.*;
 public class CategoriaController implements CategoriaIController {
 
     private final CategoriaIService categoriaService;
+    private final ObjectMapperUtil objectMapperUtil;
 
     /*
      * @PostMapping
@@ -50,12 +54,13 @@ public class CategoriaController implements CategoriaIController {
     @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<?> save(@RequestBody Categoria categoria) {
+    public ResponseEntity<?> save(@RequestBody CategoriaPostRequestDto categoriaPostRequestDto) {
 
         //@RequestBody pega o JSON enviado pelo cliente
         //e transforma em objeto Java
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(categoriaService.save(categoria));
+                .body(objectMapperUtil.map(categoriaService.save((objectMapperUtil.map(categoriaPostRequestDto, Categoria.class))),
+                        CategoriaGetResponseDto.class));
     }
 
     /*
@@ -68,15 +73,20 @@ public class CategoriaController implements CategoriaIController {
      * URL:
      * GET /categorias
      */
-    @GetMapping(path = "/findall")
+    @GetMapping(path = "/findall", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> findAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(categoriaService.findAll());
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(objectMapperUtil.mapAll(
+                        categoriaService.findAll(),
+                        CategoriaGetResponseDto.class));
     }
 
     @GetMapping("/{id}") //irá buscar pelo id
     public ResponseEntity<?> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(categoriaService.findById(id));
+                .body(objectMapperUtil.map(
+                        categoriaService.findById(id),
+                        CategoriaGetResponseDto.class));
     }
 
     /*
@@ -92,16 +102,16 @@ public class CategoriaController implements CategoriaIController {
     @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<?> updateCategoria(@PathVariable Long id, @RequestBody Categoria categoria) {
-        categoriaService.updateCategoria(id, categoria);
+    public ResponseEntity<?> updateCategoria(@PathVariable Long id, @RequestBody CategoriaPostRequestDto categoriaPostRequestDto) {
+        categoriaService.updateCategoria(id, objectMapperUtil.map(categoriaPostRequestDto, Categoria.class));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE
-    )
+    @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     //o nome já é bem sugestivo,
     //ele é responsável por deletar dados
-    public void deleteCategoria(@PathVariable Long id) {
+    public ResponseEntity<?> deleteCategoria(@PathVariable Long id) {
         categoriaService.deleteCategoria(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
