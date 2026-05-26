@@ -2,6 +2,7 @@ package br.com.ifba.mapadocorreapi.categoria.service;
 
 import br.com.ifba.mapadocorreapi.categoria.entity.Categoria;
 import br.com.ifba.mapadocorreapi.categoria.repository.CategoriaRepository;
+import br.com.ifba.mapadocorreapi.infrastructure.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,16 +23,16 @@ public class CategoriaService implements CategoriaIService {
     public Categoria save(Categoria categoria) throws RuntimeException {
 
         if (categoria == null) {
-            throw new RuntimeException(
+            throw new BusinessException(
                     "Dados de Categoria não preenchidos"
             );
 
         } else if (categoriaRepository.findByNome(categoria.getNome()).isPresent()) {
 
-            throw new RuntimeException(
+            throw new BusinessException(
                     "Categoria já cadastrada"
             );
-        }else {
+        } else {
 
             log.info("Salvando o objeto Categoria");
 
@@ -52,7 +53,7 @@ public class CategoriaService implements CategoriaIService {
 
         log.info("Buscando categoria por ID");
         return categoriaRepository.findById(id).orElseThrow(() ->
-                        new RuntimeException("Categoria não encontrada"));
+                new BusinessException("Categoria não encontrada"));
     }
 
     @Override
