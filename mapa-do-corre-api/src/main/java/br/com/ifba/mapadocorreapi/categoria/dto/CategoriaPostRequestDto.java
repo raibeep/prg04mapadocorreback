@@ -1,6 +1,7 @@
 package br.com.ifba.mapadocorreapi.categoria.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CategoriaPostRequestDto {
     @JsonProperty ("nome")
+    @NotBlank (message = "O nome é obrigatório")
     private String nome;
 
     @JsonProperty("icone")

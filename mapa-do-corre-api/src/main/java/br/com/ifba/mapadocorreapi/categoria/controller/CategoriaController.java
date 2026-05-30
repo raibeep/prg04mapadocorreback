@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 /*
  * @RestController
@@ -54,7 +55,7 @@ public class CategoriaController implements CategoriaIController {
     @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<?> save(@RequestBody CategoriaPostRequestDto categoriaPostRequestDto) {
+    public ResponseEntity<?> save(@RequestBody @Valid CategoriaPostRequestDto categoriaPostRequestDto) {
 
         //@RequestBody pega o JSON enviado pelo cliente
         //e transforma em objeto Java
@@ -81,7 +82,7 @@ public class CategoriaController implements CategoriaIController {
                         CategoriaGetResponseDto.class));
     }
 
-    @GetMapping("/{id}") //irá buscar pelo id
+    @GetMapping("/findbyid/{id}") //irá buscar pelo id
     public ResponseEntity<?> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(objectMapperUtil.map(
@@ -102,16 +103,16 @@ public class CategoriaController implements CategoriaIController {
     @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<?> updateCategoria(@PathVariable Long id, @RequestBody CategoriaPostRequestDto categoriaPostRequestDto) {
-        categoriaService.updateCategoria(id, objectMapperUtil.map(categoriaPostRequestDto, Categoria.class));
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid CategoriaPostRequestDto categoriaPostRequestDto) {
+        categoriaService.update(id, objectMapperUtil.map(categoriaPostRequestDto, Categoria.class));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     //o nome já é bem sugestivo,
     //ele é responsável por deletar dados
-    public ResponseEntity<?> deleteCategoria(@PathVariable Long id) {
-        categoriaService.deleteCategoria(id);
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        categoriaService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

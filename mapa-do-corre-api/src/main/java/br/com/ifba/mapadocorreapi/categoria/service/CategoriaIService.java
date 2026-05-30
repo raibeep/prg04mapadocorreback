@@ -12,7 +12,7 @@ public interface CategoriaIService {
 
     Categoria findById(Long id);
 
-    Categoria updateCategoria(Long id, Categoria categoria);
+    Categoria update(Long id, Categoria categoria);
 
-    void deleteCategoria(Long id);
+    void delete(Long id);
 }

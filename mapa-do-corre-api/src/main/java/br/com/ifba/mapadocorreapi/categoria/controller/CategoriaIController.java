@@ -8,6 +8,6 @@ public interface CategoriaIController {
     ResponseEntity<?> save(CategoriaPostRequestDto categoriaPostRequestDto);
     ResponseEntity<?> findAll();
     ResponseEntity<?> findById(Long id);
-    ResponseEntity<?> updateCategoria(Long id, CategoriaPostRequestDto categoriaPostRequestDto);
-    ResponseEntity<?> deleteCategoria(Long id);
+    ResponseEntity<?> update(Long id, CategoriaPostRequestDto categoriaPostRequestDto);
+    ResponseEntity<?> delete(Long id);
 }

@@ -3,6 +3,7 @@ package br.com.ifba.mapadocorreapi.categoria.service;
 import br.com.ifba.mapadocorreapi.categoria.entity.Categoria;
 import br.com.ifba.mapadocorreapi.categoria.repository.CategoriaRepository;
 import br.com.ifba.mapadocorreapi.infrastructure.exception.BusinessException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,14 +21,10 @@ public class CategoriaService implements CategoriaIService {
             LoggerFactory.getLogger(CategoriaService.class);
 
     @Override
-    public Categoria save(Categoria categoria) throws RuntimeException {
+    @Transactional
+    public Categoria save(Categoria categoria) {
 
-        if (categoria == null) {
-            throw new BusinessException(
-                    "Dados de Categoria não preenchidos"
-            );
-
-        } else if (categoriaRepository.findByNome(categoria.getNome()).isPresent()) {
+        if (categoriaRepository.findByNome(categoria.getNome()).isPresent()) {
 
             throw new BusinessException(
                     "Categoria já cadastrada"
@@ -57,9 +54,8 @@ public class CategoriaService implements CategoriaIService {
     }
 
     @Override
-    public Categoria updateCategoria(Long id,
-                                     Categoria categoria)
-            throws RuntimeException {
+    @Transactional
+    public Categoria update(Long id, Categoria categoria) {
 
         Categoria categoriaExistente = findById(id);
 
@@ -72,8 +68,8 @@ public class CategoriaService implements CategoriaIService {
     }
 
     @Override
-    public void deleteCategoria(Long id)
-            throws RuntimeException {
+    @Transactional
+    public void delete(Long id) {
 
         Categoria categoria = findById(id);
 
