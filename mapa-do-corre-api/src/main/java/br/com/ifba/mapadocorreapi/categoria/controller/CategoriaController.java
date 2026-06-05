@@ -11,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /*
  * @RestController
@@ -75,11 +77,10 @@ public class CategoriaController implements CategoriaIController {
      * GET /categorias
      */
     @GetMapping(path = "/findall", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> findAll() {
+    public ResponseEntity<Page<CategoriaGetResponseDto>> findAll(Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(objectMapperUtil.mapAll(
-                        categoriaService.findAll(),
-                        CategoriaGetResponseDto.class));
+                .body(categoriaService.findAll(pageable)
+                        .map(c -> objectMapperUtil.map(c, CategoriaGetResponseDto.class)));
     }
 
     @GetMapping("/findbyid/{id}") //irá buscar pelo id
