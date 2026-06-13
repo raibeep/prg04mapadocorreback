@@ -1,4 +1,5 @@
 package br.com.ifba.mapadocorreapi.endereco.entity;
+import br.com.ifba.mapadocorreapi.infrastructure.persistence.entity.PersistenceEntity;
 import br.com.ifba.mapadocorreapi.negocio.entity.Negocio;
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,11 +9,7 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
-public class Endereco {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Endereco extends PersistenceEntity {
     private String rua;
     private String bairro;
     private String cidade;

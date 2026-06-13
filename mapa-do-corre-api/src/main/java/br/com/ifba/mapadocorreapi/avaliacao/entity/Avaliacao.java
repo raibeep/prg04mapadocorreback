@@ -1,5 +1,6 @@
 package br.com.ifba.mapadocorreapi.avaliacao.entity;
 
+import br.com.ifba.mapadocorreapi.infrastructure.persistence.entity.PersistenceEntity;
 import br.com.ifba.mapadocorreapi.negocio.entity.Negocio;
 import br.com.ifba.mapadocorreapi.usuario.entity.Usuario;
 import jakarta.persistence.*;
@@ -10,10 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Setter
 @Entity
-public class Avaliacao {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Avaliacao extends PersistenceEntity {
 
     private Integer nota;
     private Date criadoEm;

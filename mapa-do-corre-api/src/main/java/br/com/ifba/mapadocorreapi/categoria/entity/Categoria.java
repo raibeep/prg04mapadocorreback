@@ -1,5 +1,6 @@
 package br.com.ifba.mapadocorreapi.categoria.entity;
 
+import br.com.ifba.mapadocorreapi.infrastructure.persistence.entity.PersistenceEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,12 +9,7 @@ import lombok.*;
 @Getter
 @Setter
 @Entity
-public class Categoria {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Categoria extends PersistenceEntity {
     private String nome;
     private String icone;
 }

@@ -1,5 +1,6 @@
 package br.com.ifba.mapadocorreapi.negocio.entity;
 import br.com.ifba.mapadocorreapi.categoria.entity.Categoria;
+import br.com.ifba.mapadocorreapi.infrastructure.persistence.entity.PersistenceEntity;
 import br.com.ifba.mapadocorreapi.usuario.entity.Usuario;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,11 +11,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-public class Negocio {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Negocio extends PersistenceEntity {
     private String nome;
     private String descricao;
     private String contato;
