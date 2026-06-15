@@ -7,8 +7,14 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Cliente extends Pessoa {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario_id")
