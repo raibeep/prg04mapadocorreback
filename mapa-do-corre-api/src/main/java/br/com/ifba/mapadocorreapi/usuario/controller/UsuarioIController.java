@@ -10,5 +10,4 @@ public interface UsuarioIController {
     ResponseEntity<Page<UsuarioGetResponseDto>> findAll(Pageable pageable);
     ResponseEntity<?> findById(Long id);
     ResponseEntity<?> update(Long id, UsuarioPostRequestDto usuarioPostRequestDto);
-    ResponseEntity<?> delete(Long id);
 }

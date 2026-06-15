@@ -47,12 +47,4 @@ public class UsuarioController implements UsuarioIController{
         usuarioService.update(id, objectMapperUtil.map(usuarioPostRequestDto, Usuario.class));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-    @DeleteMapping(value = "/delete/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Override
-    public ResponseEntity<?> delete(@PathVariable Long id) {
-
-        usuarioService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
 }

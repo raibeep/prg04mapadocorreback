@@ -39,11 +39,4 @@ public class UsuarioService implements UsuarioIService{
 
         return usuarioRepository.save(usuarioExistente);
     }
-
-    @Override
-    public void delete(Long id){
-        Usuario usuario = findById(id);
-
-        usuarioRepository.delete(usuario);
-    }
 }
