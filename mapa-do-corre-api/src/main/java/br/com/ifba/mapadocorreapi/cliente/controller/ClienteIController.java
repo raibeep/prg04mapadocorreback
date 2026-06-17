@@ -1,7 +1,9 @@
 package br.com.ifba.mapadocorreapi.cliente.controller;
 
+import br.com.ifba.mapadocorreapi.avaliacao.entity.Avaliacao;
 import br.com.ifba.mapadocorreapi.cliente.dto.ClienteGetResponseDto;
 import br.com.ifba.mapadocorreapi.cliente.dto.ClientePostRequestDto;
+import br.com.ifba.mapadocorreapi.pedido.entity.Pedido;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,4 +24,8 @@ public interface ClienteIController {
     public ResponseEntity<?> updateSenha(@PathVariable Long id, @RequestParam String senhaAtual, @RequestParam String novaSenha);
 
     public ResponseEntity<?> delete(@PathVariable Long id);
+
+    public ResponseEntity<Pedido> realizarPedido(@PathVariable Long clienteId, @PathVariable Long negocioId, @RequestBody @Valid Pedido pedido);
+
+    public ResponseEntity<Avaliacao> avaliarNegocio(@PathVariable Long clienteId, @PathVariable Long negocioId, @RequestBody @Valid Avaliacao avaliacao);
 }

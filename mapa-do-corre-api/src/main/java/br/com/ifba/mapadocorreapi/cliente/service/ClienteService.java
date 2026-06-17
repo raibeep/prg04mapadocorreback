@@ -1,9 +1,16 @@
 package br.com.ifba.mapadocorreapi.cliente.service;
 
+import br.com.ifba.mapadocorreapi.avaliacao.entity.Avaliacao;
+import br.com.ifba.mapadocorreapi.avaliacao.repository.AvaliacaoRepository;
 import br.com.ifba.mapadocorreapi.cliente.entity.Cliente;
 import br.com.ifba.mapadocorreapi.cliente.repository.ClienteRepository;
+import br.com.ifba.mapadocorreapi.enums.StatusPedido;
 import br.com.ifba.mapadocorreapi.enums.TiposPerfil;
 import br.com.ifba.mapadocorreapi.infrastructure.exception.BusinessException;
+import br.com.ifba.mapadocorreapi.negocio.entity.Negocio;
+import br.com.ifba.mapadocorreapi.negocio.repository.NegocioRepository;
+import br.com.ifba.mapadocorreapi.pedido.entity.Pedido;
+import br.com.ifba.mapadocorreapi.pedido.repository.PedidoRepository;
 import br.com.ifba.mapadocorreapi.perfil.entity.Perfil;
 import br.com.ifba.mapadocorreapi.usuario.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
@@ -13,11 +20,16 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 @Service
 @RequiredArgsConstructor
 public class ClienteService implements ClienteIService{
     private final ClienteRepository clienteRepository;
     private final UsuarioRepository usuarioRepository;
+    private final PedidoRepository pedidoRepository;
+    private final AvaliacaoRepository avaliacaoRepository;
+    private final NegocioRepository negocioRepository;
 
     @Override
     @Transactional
@@ -88,5 +100,40 @@ public class ClienteService implements ClienteIService{
 
         cliente.getUsuario().setSenha(novaSenha);
         clienteRepository.save(cliente);
+    }
+
+    @Override
+    @Transactional
+    public Avaliacao avaliarNegocio(Long clienteId, Long negocioId, Avaliacao avaliacao) {
+        Cliente cliente = findById(clienteId);
+
+        Negocio negocio = negocioRepository.findById(negocioId)
+                .orElseThrow(() -> new BusinessException("Negócio não encontrado."));
+
+        if (avaliacao.getNota() < 1 || avaliacao.getNota() > 5) {
+            throw new BusinessException("A nota deve ser entre 1 e 5.");
+        }
+
+        avaliacao.setAutor(cliente.getUsuario());
+        avaliacao.setNegocio(negocio);
+        avaliacao.setCriadoEm(new Date());
+
+        return avaliacaoRepository.save(avaliacao);
+    }
+
+    @Override
+    @Transactional
+    public Pedido realizarPedido(Long clienteId, Long negocioId, Pedido pedido) {
+        Cliente cliente = findById(clienteId);
+
+        Negocio negocio = negocioRepository.findById(negocioId)
+                .orElseThrow(() -> new BusinessException("Negócio não encontrado."));
+
+        pedido.setCliente(cliente.getUsuario());
+        pedido.setNegocio(negocio);
+        pedido.setStatus(StatusPedido.PENDENTE);
+        pedido.setCriadoEm(new Date());
+
+        return pedidoRepository.save(pedido);
     }
 }

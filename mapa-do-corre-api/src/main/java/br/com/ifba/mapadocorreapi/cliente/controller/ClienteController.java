@@ -1,10 +1,12 @@
 package br.com.ifba.mapadocorreapi.cliente.controller;
 
+import br.com.ifba.mapadocorreapi.avaliacao.entity.Avaliacao;
 import br.com.ifba.mapadocorreapi.cliente.dto.ClienteGetResponseDto;
 import br.com.ifba.mapadocorreapi.cliente.dto.ClientePostRequestDto;
 import br.com.ifba.mapadocorreapi.cliente.entity.Cliente;
 import br.com.ifba.mapadocorreapi.cliente.service.ClienteIService;
 import br.com.ifba.mapadocorreapi.infrastructure.mapper.ObjectMapperUtil;
+import br.com.ifba.mapadocorreapi.pedido.entity.Pedido;
 import br.com.ifba.mapadocorreapi.usuario.entity.Usuario;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -85,5 +87,25 @@ public class ClienteController implements ClienteIController {
     public ResponseEntity<?> delete(@PathVariable Long id) {
         clienteService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/{clienteId}/avaliacoes/{negocioId}")
+    public ResponseEntity<Avaliacao> avaliarNegocio(
+            @PathVariable Long clienteId,
+            @PathVariable Long negocioId,
+            @RequestBody @Valid Avaliacao avaliacao) {
+
+        Avaliacao salva = clienteService.avaliarNegocio(clienteId, negocioId, avaliacao);
+        return ResponseEntity.status(HttpStatus.CREATED).body(salva);
+    }
+
+    @PostMapping("/{clienteId}/pedidos/{negocioId}")
+    public ResponseEntity<Pedido> realizarPedido(
+            @PathVariable Long clienteId,
+            @PathVariable Long negocioId,
+            @RequestBody @Valid Pedido pedido) {
+
+        Pedido salvo = clienteService.realizarPedido(clienteId, negocioId, pedido);
+        return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
     }
 }
