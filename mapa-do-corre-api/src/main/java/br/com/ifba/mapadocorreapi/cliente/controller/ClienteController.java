@@ -1,11 +1,15 @@
 package br.com.ifba.mapadocorreapi.cliente.controller;
 
+import br.com.ifba.mapadocorreapi.avaliacao.dto.AvaliacaoGetResponseDto;
+import br.com.ifba.mapadocorreapi.avaliacao.dto.AvaliacaoPostRequestDto;
 import br.com.ifba.mapadocorreapi.avaliacao.entity.Avaliacao;
 import br.com.ifba.mapadocorreapi.cliente.dto.ClienteGetResponseDto;
 import br.com.ifba.mapadocorreapi.cliente.dto.ClientePostRequestDto;
 import br.com.ifba.mapadocorreapi.cliente.entity.Cliente;
 import br.com.ifba.mapadocorreapi.cliente.service.ClienteIService;
 import br.com.ifba.mapadocorreapi.infrastructure.mapper.ObjectMapperUtil;
+import br.com.ifba.mapadocorreapi.pedido.dto.PedidoGetResponseDto;
+import br.com.ifba.mapadocorreapi.pedido.dto.PedidoPostRequestDto;
 import br.com.ifba.mapadocorreapi.pedido.entity.Pedido;
 import br.com.ifba.mapadocorreapi.usuario.entity.Usuario;
 import jakarta.validation.Valid;
@@ -90,22 +94,50 @@ public class ClienteController implements ClienteIController {
     }
 
     @PostMapping("/{clienteId}/avaliacoes/{negocioId}")
-    public ResponseEntity<Avaliacao> avaliarNegocio(
+    public ResponseEntity<AvaliacaoGetResponseDto> avaliarNegocio(
             @PathVariable Long clienteId,
             @PathVariable Long negocioId,
-            @RequestBody @Valid Avaliacao avaliacao) {
+            @RequestBody @Valid AvaliacaoPostRequestDto dto) {
+
+        Avaliacao avaliacao = new Avaliacao();
+        avaliacao.setNota(dto.getNota());
+        avaliacao.setComentario(dto.getComentario());
 
         Avaliacao salva = clienteService.avaliarNegocio(clienteId, negocioId, avaliacao);
-        return ResponseEntity.status(HttpStatus.CREATED).body(salva);
+
+        // Converte a entidade retornada pelo service em DTO para não expor dados sensíveis na resposta
+        AvaliacaoGetResponseDto response = new AvaliacaoGetResponseDto();
+        response.setId(salva.getId());
+        response.setNota(salva.getNota());
+        response.setComentario(salva.getComentario());
+        response.setResposta(salva.getResposta());
+        response.setCriadoEm(salva.getCriadoEm());
+        response.setAutorEmail(salva.getAutor().getEmail());
+        response.setNegocioNome(salva.getNegocio().getNome());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/{clienteId}/pedidos/{negocioId}")
-    public ResponseEntity<Pedido> realizarPedido(
+    public ResponseEntity<PedidoGetResponseDto> realizarPedido(
             @PathVariable Long clienteId,
             @PathVariable Long negocioId,
-            @RequestBody @Valid Pedido pedido) {
+            @RequestBody @Valid PedidoPostRequestDto dto) {
+
+        Pedido pedido = new Pedido();
+        pedido.setValorTotal(dto.getValorTotal());
 
         Pedido salvo = clienteService.realizarPedido(clienteId, negocioId, pedido);
-        return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
+
+        // Converte a entidade retornada pelo service em DTO para não expor dados sensíveis na resposta
+        PedidoGetResponseDto response = new PedidoGetResponseDto();
+        response.setId(salvo.getId());
+        response.setValorTotal(salvo.getValorTotal());
+        response.setStatus(salvo.getStatus());
+        response.setCriadoEm(salvo.getCriadoEm());
+        response.setClienteEmail(salvo.getCliente().getEmail());
+        response.setNegocioNome(salvo.getNegocio().getNome());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

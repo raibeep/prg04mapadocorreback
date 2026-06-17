@@ -17,6 +17,7 @@ public class Avaliacao extends PersistenceEntity {
     private Integer nota;
     private Date criadoEm;
     private String comentario;
+    private String resposta;
 
     @ManyToOne
     @JoinColumn(name = "autor_id")

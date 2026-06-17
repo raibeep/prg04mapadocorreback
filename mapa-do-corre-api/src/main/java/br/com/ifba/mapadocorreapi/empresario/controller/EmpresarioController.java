@@ -1,0 +1,124 @@
+package br.com.ifba.mapadocorreapi.empresario.controller;
+
+import br.com.ifba.mapadocorreapi.avaliacao.dto.AvaliacaoGetResponseDto;
+import br.com.ifba.mapadocorreapi.avaliacao.entity.Avaliacao;
+import br.com.ifba.mapadocorreapi.empresario.dto.EmpresarioGetResponseDto;
+import br.com.ifba.mapadocorreapi.empresario.dto.EmpresarioPostRequestDto;
+import br.com.ifba.mapadocorreapi.empresario.entity.Empresario;
+import br.com.ifba.mapadocorreapi.empresario.service.EmpresarioIService;
+import br.com.ifba.mapadocorreapi.infrastructure.mapper.ObjectMapperUtil;
+import br.com.ifba.mapadocorreapi.negocio.entity.Negocio;
+import br.com.ifba.mapadocorreapi.usuario.entity.Usuario;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/empresarios")
+@RequiredArgsConstructor
+public class EmpresarioController {
+
+    private final EmpresarioIService empresarioService;
+    private final ObjectMapperUtil objectMapperUtil;
+
+    @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<EmpresarioGetResponseDto> save(@RequestBody @Valid EmpresarioPostRequestDto dto) {
+        Usuario usuario = new Usuario();
+        usuario.setEmail(dto.getEmail());
+        usuario.setSenha(dto.getSenha());
+
+        Empresario empresario = objectMapperUtil.map(dto, Empresario.class);
+        empresario.setUsuario(usuario);
+
+        Empresario salvo = empresarioService.save(empresario);
+
+        EmpresarioGetResponseDto response = objectMapperUtil.map(salvo, EmpresarioGetResponseDto.class);
+        response.setEmail(salvo.getUsuario().getEmail());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping(path = "/findall", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Page<EmpresarioGetResponseDto>> findAll(Pageable pageable) {
+        return ResponseEntity.ok(
+                empresarioService.findAll(pageable)
+                        .map(e -> {
+                            EmpresarioGetResponseDto dto = objectMapperUtil.map(e, EmpresarioGetResponseDto.class);
+                            dto.setEmail(e.getUsuario().getEmail());
+                            return dto;
+                        }));
+    }
+
+    @GetMapping("/findbyid/{id}")
+    public ResponseEntity<EmpresarioGetResponseDto> findById(@PathVariable Long id) {
+        Empresario empresario = empresarioService.findById(id);
+        EmpresarioGetResponseDto response = objectMapperUtil.map(empresario, EmpresarioGetResponseDto.class);
+        response.setEmail(empresario.getUsuario().getEmail());
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> update(
+            @PathVariable Long id,
+            @RequestBody @Valid EmpresarioPostRequestDto dto) {
+        Usuario usuario = new Usuario();
+        usuario.setEmail(dto.getEmail());
+        usuario.setSenha(dto.getSenha());
+
+        Empresario empresario = objectMapperUtil.map(dto, Empresario.class);
+        empresario.setUsuario(usuario);
+
+        empresarioService.update(id, empresario);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping(value = "/update/{id}/senha")
+    public ResponseEntity<Void> updateSenha(
+            @PathVariable Long id,
+            @RequestParam String senhaAtual,
+            @RequestParam String novaSenha) {
+        empresarioService.updateSenha(id, senhaAtual, novaSenha);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        empresarioService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{empresarioId}/negocios")
+    public ResponseEntity<Negocio> cadastrarNegocio(
+            @PathVariable Long empresarioId,
+            @RequestBody @Valid Negocio negocio) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(empresarioService.cadastrarNegocio(empresarioId, negocio));
+    }
+
+    @PatchMapping("/{empresarioId}/avaliacoes/{avaliacaoId}/resposta")
+    public ResponseEntity<AvaliacaoGetResponseDto> responderAvaliacao(
+            @PathVariable Long empresarioId,
+            @PathVariable Long avaliacaoId,
+            @RequestParam String resposta) {
+
+        Avaliacao respondida = empresarioService.responderAvaliacao(empresarioId, avaliacaoId, resposta);
+
+        // Converte a entidade retornada pelo service em DTO para não expor dados sensíveis na resposta
+        AvaliacaoGetResponseDto response = new AvaliacaoGetResponseDto();
+        response.setId(respondida.getId());
+        response.setNota(respondida.getNota());
+        response.setComentario(respondida.getComentario());
+        response.setResposta(respondida.getResposta());
+        response.setCriadoEm(respondida.getCriadoEm());
+        response.setAutorEmail(respondida.getAutor().getEmail());
+        response.setNegocioNome(respondida.getNegocio().getNome());
+
+        return ResponseEntity.ok(response);
+    }
+}

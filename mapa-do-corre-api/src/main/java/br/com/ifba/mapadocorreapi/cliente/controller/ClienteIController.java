@@ -1,8 +1,12 @@
 package br.com.ifba.mapadocorreapi.cliente.controller;
 
+import br.com.ifba.mapadocorreapi.avaliacao.dto.AvaliacaoGetResponseDto;
+import br.com.ifba.mapadocorreapi.avaliacao.dto.AvaliacaoPostRequestDto;
 import br.com.ifba.mapadocorreapi.avaliacao.entity.Avaliacao;
 import br.com.ifba.mapadocorreapi.cliente.dto.ClienteGetResponseDto;
 import br.com.ifba.mapadocorreapi.cliente.dto.ClientePostRequestDto;
+import br.com.ifba.mapadocorreapi.pedido.dto.PedidoGetResponseDto;
+import br.com.ifba.mapadocorreapi.pedido.dto.PedidoPostRequestDto;
 import br.com.ifba.mapadocorreapi.pedido.entity.Pedido;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -25,7 +29,7 @@ public interface ClienteIController {
 
     public ResponseEntity<?> delete(@PathVariable Long id);
 
-    public ResponseEntity<Pedido> realizarPedido(@PathVariable Long clienteId, @PathVariable Long negocioId, @RequestBody @Valid Pedido pedido);
+    public ResponseEntity<AvaliacaoGetResponseDto> avaliarNegocio(@PathVariable Long clienteId, @PathVariable Long negocioId, @RequestBody @Valid AvaliacaoPostRequestDto dto);
 
-    public ResponseEntity<Avaliacao> avaliarNegocio(@PathVariable Long clienteId, @PathVariable Long negocioId, @RequestBody @Valid Avaliacao avaliacao);
+    public ResponseEntity<PedidoGetResponseDto> realizarPedido(@PathVariable Long clienteId, @PathVariable Long negocioId, @RequestBody @Valid PedidoPostRequestDto dto);
 }
