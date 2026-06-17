@@ -14,6 +14,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -25,7 +26,7 @@ public class EmpresarioService implements EmpresarioIService{
     private final UsuarioRepository usuarioRepository;
     private final NegocioRepository negocioRepository;
     private final AvaliacaoRepository avaliacaoRepository;
-
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -37,6 +38,8 @@ public class EmpresarioService implements EmpresarioIService{
         if(usuarioRepository.existsByEmail(empresario.getUsuario().getEmail())){
             throw new BusinessException("Email já cadastrado.");
         }
+
+        empresario.getUsuario().setSenha(passwordEncoder.encode(empresario.getUsuario().getSenha()));
 
         Perfil perfil = new Perfil();
         perfil.setNivelAcesso(TiposPerfil.EMPRESARIO);
@@ -90,11 +93,12 @@ public class EmpresarioService implements EmpresarioIService{
     public void updateSenha(Long id, String senhaAtual, String novaSenha) {
         Empresario empresario = findById(id);
 
-        if (!empresario.getUsuario().getSenha().equals(senhaAtual)) {
+        // Compara com matches porque a senha no banco está criptografada
+        if (!passwordEncoder.matches(senhaAtual, empresario.getUsuario().getSenha())) {
             throw new BusinessException("Senha atual incorreta.");
         }
 
-        empresario.getUsuario().setSenha(novaSenha);
+        empresario.getUsuario().setSenha(passwordEncoder.encode(novaSenha));
         empresarioRepository.save(empresario);
     }
 

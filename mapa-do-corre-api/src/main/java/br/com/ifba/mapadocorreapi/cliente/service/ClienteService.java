@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -30,11 +31,11 @@ public class ClienteService implements ClienteIService{
     private final PedidoRepository pedidoRepository;
     private final AvaliacaoRepository avaliacaoRepository;
     private final NegocioRepository negocioRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
-    public Cliente save(Cliente cliente){
-
+    public Cliente save(Cliente cliente) {
         if (cliente.getUsuario() == null) {
             throw new BusinessException("Dados de usuário não informados.");
         }
@@ -43,9 +44,11 @@ public class ClienteService implements ClienteIService{
             throw new BusinessException("Email já cadastrado.");
         }
 
+        // Criptografa a senha antes de salvar
+        cliente.getUsuario().setSenha(passwordEncoder.encode(cliente.getUsuario().getSenha()));
+
         Perfil perfil = new Perfil();
         perfil.setNivelAcesso(TiposPerfil.CLIENTE);
-
         cliente.getUsuario().setPerfil(perfil);
 
         return clienteRepository.save(cliente);
@@ -94,11 +97,12 @@ public class ClienteService implements ClienteIService{
     public void updateSenha(Long id, String senhaAtual, String novaSenha) {
         Cliente cliente = findById(id);
 
-        if (!cliente.getUsuario().getSenha().equals(senhaAtual)) {
+        // Compara com matches porque a senha no banco está criptografada
+        if (!passwordEncoder.matches(senhaAtual, cliente.getUsuario().getSenha())) {
             throw new BusinessException("Senha atual incorreta.");
         }
 
-        cliente.getUsuario().setSenha(novaSenha);
+        cliente.getUsuario().setSenha(passwordEncoder.encode(novaSenha));
         clienteRepository.save(cliente);
     }
 
