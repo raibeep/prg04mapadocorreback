@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/empresarios")
 @RequiredArgsConstructor
-public class EmpresarioController {
+public class EmpresarioController implements EmpresarioIController{
 
     private final EmpresarioIService empresarioService;
     private final ObjectMapperUtil objectMapperUtil;
