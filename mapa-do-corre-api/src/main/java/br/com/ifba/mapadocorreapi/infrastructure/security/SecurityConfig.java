@@ -25,14 +25,12 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // Rotas públicas — qualquer um acessa
                         .requestMatchers("/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/clientes/save").permitAll()
                         .requestMatchers(HttpMethod.POST, "/empresarios/save").permitAll()
-                        // Rotas protegidas por perfil
+                        .requestMatchers(HttpMethod.GET, "/negocios/**").permitAll() // qualquer um vê os negócios
                         .requestMatchers("/empresarios/**").hasRole("EMPRESARIO")
                         .requestMatchers("/clientes/**").hasRole("CLIENTE")
-                        // Todo o resto exige autenticação
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
