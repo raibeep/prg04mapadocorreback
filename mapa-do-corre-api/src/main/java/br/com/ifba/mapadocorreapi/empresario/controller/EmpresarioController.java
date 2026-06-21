@@ -2,11 +2,15 @@ package br.com.ifba.mapadocorreapi.empresario.controller;
 
 import br.com.ifba.mapadocorreapi.avaliacao.dto.AvaliacaoGetResponseDto;
 import br.com.ifba.mapadocorreapi.avaliacao.entity.Avaliacao;
+import br.com.ifba.mapadocorreapi.categoria.entity.Categoria;
+import br.com.ifba.mapadocorreapi.categoria.service.CategoriaIService;
 import br.com.ifba.mapadocorreapi.empresario.dto.EmpresarioGetResponseDto;
 import br.com.ifba.mapadocorreapi.empresario.dto.EmpresarioPostRequestDto;
 import br.com.ifba.mapadocorreapi.empresario.entity.Empresario;
 import br.com.ifba.mapadocorreapi.empresario.service.EmpresarioIService;
 import br.com.ifba.mapadocorreapi.infrastructure.mapper.ObjectMapperUtil;
+import br.com.ifba.mapadocorreapi.negocio.dto.NegocioGetResponseDto;
+import br.com.ifba.mapadocorreapi.negocio.dto.NegocioPostRequestDto;
 import br.com.ifba.mapadocorreapi.negocio.entity.Negocio;
 import br.com.ifba.mapadocorreapi.usuario.entity.Usuario;
 import jakarta.validation.Valid;
@@ -24,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 public class EmpresarioController implements EmpresarioIController{
 
     private final EmpresarioIService empresarioService;
+    private final CategoriaIService categoriaService;
     private final ObjectMapperUtil objectMapperUtil;
 
     @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -94,11 +99,22 @@ public class EmpresarioController implements EmpresarioIController{
     }
 
     @PostMapping("/{empresarioId}/negocios")
-    public ResponseEntity<Negocio> cadastrarNegocio(
+    public ResponseEntity<NegocioGetResponseDto> cadastrarNegocio(
             @PathVariable Long empresarioId,
-            @RequestBody @Valid Negocio negocio) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(empresarioService.cadastrarNegocio(empresarioId, negocio));
+            @RequestBody @Valid NegocioPostRequestDto dto) {
+
+        Negocio negocio = objectMapperUtil.map(dto, Negocio.class);
+
+        Categoria categoria = categoriaService.findById(dto.getCategoriaId());
+        negocio.setCategoria(categoria);
+
+        Negocio salvo = empresarioService.cadastrarNegocio(empresarioId, negocio);
+
+        NegocioGetResponseDto response = objectMapperUtil.map(salvo, NegocioGetResponseDto.class);
+        response.setCategoriaNome(salvo.getCategoria().getNome());
+        response.setDonoEmail(salvo.getDono().getEmail());
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PatchMapping("/{empresarioId}/avaliacoes/{avaliacaoId}/resposta")
