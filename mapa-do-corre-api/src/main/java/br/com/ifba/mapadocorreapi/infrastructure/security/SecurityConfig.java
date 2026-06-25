@@ -36,6 +36,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/negocios/**").permitAll()
                         .requestMatchers("/empresarios/**").hasRole("EMPRESARIO")
                         .requestMatchers("/clientes/**").hasRole("CLIENTE")
+                        .requestMatchers(HttpMethod.POST, "/usuarios/verificar-email").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
@@ -50,7 +51,7 @@ public class SecurityConfig {
 
         configuration.setAllowedOrigins(
                 List.of("http://localhost:5173",
-                        "https://seu-front.vercel.app")
+                        "https://prg04mapadocorrefront.vercel.app/")
 
         );
 
