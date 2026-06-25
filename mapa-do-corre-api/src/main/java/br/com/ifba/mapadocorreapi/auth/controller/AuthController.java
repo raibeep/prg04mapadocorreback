@@ -3,6 +3,7 @@ package br.com.ifba.mapadocorreapi.auth.controller;
 import br.com.ifba.mapadocorreapi.auth.dto.LoginRequestDto;
 import br.com.ifba.mapadocorreapi.auth.dto.LoginResponseDto;
 import br.com.ifba.mapadocorreapi.infrastructure.security.JwtUtil;
+import br.com.ifba.mapadocorreapi.usuario.entity.Usuario;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,8 @@ public class AuthController {
                 .orElse("")
                 .replace("ROLE_", "");
 
+        Usuario usuario = (Usuario) auth.getPrincipal();
+        Long id = usuario.getId();
         String token = jwtUtil.generateToken(dto.getEmail(), perfil);
 
         return ResponseEntity.ok(new LoginResponseDto(token, perfil));
