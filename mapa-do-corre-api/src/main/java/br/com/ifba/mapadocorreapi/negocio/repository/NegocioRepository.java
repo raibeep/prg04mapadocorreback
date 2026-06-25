@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface NegocioRepository extends JpaRepository<Negocio, Long> {
     Optional<Negocio> findByNome(String nome);
+    boolean existsByDonoId(Long donoId);  // ← adiciona isso
 }
