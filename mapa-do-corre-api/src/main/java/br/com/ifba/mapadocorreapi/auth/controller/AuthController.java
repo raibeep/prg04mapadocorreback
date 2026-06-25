@@ -39,6 +39,6 @@ public class AuthController {
         Long id = usuario.getId();
         String token = jwtUtil.generateToken(dto.getEmail(), perfil);
 
-        return ResponseEntity.ok(new LoginResponseDto(token, perfil));
+        return ResponseEntity.ok(new LoginResponseDto(token, id, perfil));
     }
 }
