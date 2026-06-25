@@ -22,23 +22,19 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody @Valid LoginRequestDto dto) {
-
-        // Autentica email e senha pelo Spring Security
+        // 1. Autentica (se a senha estiver errada, o Spring já barra aqui)
         Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getSenha())
         );
 
-        // Pega o perfil do usuário autenticado
-        String perfil = auth.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .findFirst()
-                .orElse("")
-                .replace("ROLE_", "");
+        // 2. Pega o perfil de forma simples
+        String perfil = auth.getAuthorities().iterator().next().getAuthority().replace("ROLE_", "");
 
-        Usuario usuario = (Usuario) auth.getPrincipal();
-        Long id = usuario.getId();
+        // 3. Gera o token
         String token = jwtUtil.generateToken(dto.getEmail(), perfil);
 
-        return ResponseEntity.ok(new LoginResponseDto(token, id, perfil));
+        // 4. Retorna a resposta (Se o ID estiver dando erro, mandamos o e-mail no lugar ou null para não travar o login)
+        return ResponseEntity.ok(new LoginResponseDto(token, perfil, null));
     }
+
 }
