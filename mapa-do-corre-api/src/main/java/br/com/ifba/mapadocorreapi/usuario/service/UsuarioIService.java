@@ -8,4 +8,5 @@ public interface UsuarioIService {
     public Page<Usuario> findAll(Pageable pageble);
     public Usuario findById(Long id);
     public Usuario update(Long id, Usuario usuario);
+    public boolean emailExiste(String email);
 }

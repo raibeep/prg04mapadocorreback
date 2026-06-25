@@ -39,4 +39,9 @@ public class UsuarioService implements UsuarioIService{
 
         return usuarioRepository.save(usuarioExistente);
     }
+
+    @Override
+    public boolean emailExiste(String email){
+        return usuarioRepository.existsByEmail(email);
+    }
 }

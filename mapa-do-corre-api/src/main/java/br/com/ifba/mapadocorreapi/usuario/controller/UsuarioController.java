@@ -1,6 +1,7 @@
 package br.com.ifba.mapadocorreapi.usuario.controller;
 
 import br.com.ifba.mapadocorreapi.infrastructure.mapper.ObjectMapperUtil;
+import br.com.ifba.mapadocorreapi.usuario.dto.EmailRequestDto;
 import br.com.ifba.mapadocorreapi.usuario.dto.UsuarioGetResponseDto;
 import br.com.ifba.mapadocorreapi.usuario.dto.UsuarioPostRequestDto;
 import br.com.ifba.mapadocorreapi.usuario.entity.Usuario;
@@ -46,5 +47,15 @@ public class UsuarioController implements UsuarioIController{
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid UsuarioPostRequestDto usuarioPostRequestDto) {
         usuarioService.update(id, objectMapperUtil.map(usuarioPostRequestDto, Usuario.class));
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/verificar-email")
+    @Override
+    public ResponseEntity<Boolean> verificarEmail(
+            @RequestBody EmailRequestDto dto) {
+
+        boolean existe = usuarioService.emailExiste(dto.getEmail());
+
+        return ResponseEntity.ok(existe);
     }
 }
