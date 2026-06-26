@@ -125,4 +125,10 @@ public class EmpresarioService implements EmpresarioIService{
 
         return avaliacaoRepository.save(avaliacao);
     }
+
+    @Override
+    public Negocio getNegocioDoEmpresario(Long empresarioId) {
+        Empresario empresario = findById(empresarioId);
+        return negocioRepository.findByDonoId(empresario.getUsuario().getId()).orElse(null);
+    }
 }

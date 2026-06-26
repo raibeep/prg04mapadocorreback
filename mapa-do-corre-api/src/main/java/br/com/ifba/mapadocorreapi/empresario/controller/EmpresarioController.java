@@ -137,4 +137,17 @@ public class EmpresarioController implements EmpresarioIController{
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/{empresarioId}/negocios")
+    public ResponseEntity<NegocioGetResponseDto> getNegocio(@PathVariable Long empresarioId) {
+        Negocio negocio = empresarioService.getNegocioDoEmpresario(empresarioId);
+
+        if (negocio == null) return ResponseEntity.noContent().build();
+
+        NegocioGetResponseDto response = objectMapperUtil.map(negocio, NegocioGetResponseDto.class);
+        response.setCategoriaNome(negocio.getCategoria().getNome());
+        response.setDonoEmail(negocio.getDono().getEmail());
+
+        return ResponseEntity.ok(response);
+    }
 }

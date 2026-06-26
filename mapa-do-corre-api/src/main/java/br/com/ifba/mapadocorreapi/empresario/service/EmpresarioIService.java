@@ -22,4 +22,6 @@ public interface EmpresarioIService {
     public Negocio cadastrarNegocio(Long empresarioId, Negocio negocio);
 
     public Avaliacao responderAvaliacao(Long empresarioId, Long avaliacaoId, String resposta);
+
+    Negocio getNegocioDoEmpresario(Long empresarioId);
 }
