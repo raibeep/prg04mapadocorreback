@@ -2,6 +2,8 @@ package br.com.ifba.mapadocorreapi.auth.controller;
 
 import br.com.ifba.mapadocorreapi.auth.dto.LoginRequestDto;
 import br.com.ifba.mapadocorreapi.auth.dto.LoginResponseDto;
+import br.com.ifba.mapadocorreapi.cliente.repository.ClienteRepository;
+import br.com.ifba.mapadocorreapi.empresario.repository.EmpresarioRepository;
 import br.com.ifba.mapadocorreapi.infrastructure.security.JwtUtil;
 import br.com.ifba.mapadocorreapi.negocio.repository.NegocioRepository;
 import br.com.ifba.mapadocorreapi.usuario.entity.Usuario;
@@ -28,6 +30,9 @@ public class AuthController {
     private final JwtUtil jwtUtil;
     private final UsuarioRepository usuarioRepository;
     private final NegocioRepository negocioRepository;
+    private final ClienteRepository clienteRepository;
+    private final EmpresarioRepository empresarioRepository;
+
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody @Valid LoginRequestDto dto) {
@@ -47,12 +52,25 @@ public class AuthController {
 
         String token = jwtUtil.generateToken(dto.getEmail(), perfil);
 
-        // Verifica se é empresário e se tem negócio cadastrado
         Boolean temNegocio = false;
+        Long perfilId = null;
+        String nome = "";
+
         if ("EMPRESARIO".equals(perfil)) {
-            temNegocio = negocioRepository.existsByDonoId(usuario.getId());
+            var empresario = empresarioRepository.findByUsuarioId(usuario.getId()).orElse(null);
+            if (empresario != null) {
+                perfilId = empresario.getId();
+                nome = empresario.getNome();
+                temNegocio = negocioRepository.existsByDonoId(usuario.getId());
+            }
+        } else if ("CLIENTE".equals(perfil)) {
+            var cliente = clienteRepository.findByUsuarioId(usuario.getId()).orElse(null);
+            if (cliente != null) {
+                perfilId = cliente.getId();
+                nome = cliente.getNome();
+            }
         }
 
-        return ResponseEntity.ok(new LoginResponseDto(token, perfil, usuario.getId(), temNegocio));
+        return ResponseEntity.ok(new LoginResponseDto(token, perfil, usuario.getId(), perfilId, temNegocio, nome));
     }
 }
