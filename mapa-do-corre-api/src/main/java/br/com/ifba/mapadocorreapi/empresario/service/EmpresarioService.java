@@ -63,20 +63,13 @@ public class EmpresarioService implements EmpresarioIService{
     @Override
     @Transactional
     public Empresario update(Long id, Empresario empresario) {
+
         Empresario empresarioExistente = findById(id);
 
-        if(usuarioRepository.existsByEmailAndIdNot(
-                empresario.getUsuario().getEmail(),
-                empresarioExistente.getUsuario().getId())){
-            throw new BusinessException("Email já está em uso.");
-        }
-
         empresarioExistente.setNome(empresario.getNome());
-        empresarioExistente.setBio(empresario.getBio());
-        empresarioExistente.setCpf(empresario.getCpf());
         empresarioExistente.setTelefone(empresario.getTelefone());
+        empresarioExistente.setBio(empresario.getBio());
         empresarioExistente.setFotoPerfil(empresario.getFotoPerfil());
-        empresarioExistente.getUsuario().setEmail(empresario.getUsuario().getEmail());
 
         return empresarioRepository.save(empresarioExistente);
     }

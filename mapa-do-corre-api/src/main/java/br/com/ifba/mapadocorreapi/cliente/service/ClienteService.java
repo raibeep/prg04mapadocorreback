@@ -70,18 +70,10 @@ public class ClienteService implements ClienteIService{
     public Cliente update(Long id, Cliente cliente) {
         Cliente clienteExistente = findById(id);
 
-        if (usuarioRepository.existsByEmailAndIdNot(
-                cliente.getUsuario().getEmail(),
-                clienteExistente.getUsuario().getId())) {
-            throw new BusinessException("Email já está em uso.");
-        }
-
         clienteExistente.setNome(cliente.getNome());
         clienteExistente.setBio(cliente.getBio());
-        clienteExistente.setCpf(cliente.getCpf());
         clienteExistente.setTelefone(cliente.getTelefone());
         clienteExistente.setFotoPerfil(cliente.getFotoPerfil());
-        clienteExistente.getUsuario().setEmail(cliente.getUsuario().getEmail());
 
         return clienteRepository.save(clienteExistente);
     }
