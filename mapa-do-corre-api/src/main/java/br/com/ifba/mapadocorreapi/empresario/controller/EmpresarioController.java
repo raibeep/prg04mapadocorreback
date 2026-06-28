@@ -6,6 +6,7 @@ import br.com.ifba.mapadocorreapi.categoria.entity.Categoria;
 import br.com.ifba.mapadocorreapi.categoria.service.CategoriaIService;
 import br.com.ifba.mapadocorreapi.empresario.dto.EmpresarioGetResponseDto;
 import br.com.ifba.mapadocorreapi.empresario.dto.EmpresarioPostRequestDto;
+import br.com.ifba.mapadocorreapi.empresario.dto.EmpresarioUpdateRequestDto;
 import br.com.ifba.mapadocorreapi.empresario.entity.Empresario;
 import br.com.ifba.mapadocorreapi.empresario.service.EmpresarioIService;
 import br.com.ifba.mapadocorreapi.infrastructure.mapper.ObjectMapperUtil;
@@ -68,19 +69,15 @@ public class EmpresarioController implements EmpresarioIController{
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> update(
-            @PathVariable Long id,
-            @RequestBody @Valid EmpresarioPostRequestDto dto) {
-        Usuario usuario = new Usuario();
-        usuario.setEmail(dto.getEmail());
-        usuario.setSenha(dto.getSenha());
+    @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid EmpresarioUpdateRequestDto dto) {
 
         Empresario empresario = objectMapperUtil.map(dto, Empresario.class);
-        empresario.setUsuario(usuario);
 
         empresarioService.update(id, empresario);
-        return ResponseEntity.noContent().build();
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping(value = "/update/{id}/senha")

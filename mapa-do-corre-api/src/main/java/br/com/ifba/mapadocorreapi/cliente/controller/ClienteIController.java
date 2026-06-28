@@ -5,6 +5,7 @@ import br.com.ifba.mapadocorreapi.avaliacao.dto.AvaliacaoPostRequestDto;
 import br.com.ifba.mapadocorreapi.avaliacao.entity.Avaliacao;
 import br.com.ifba.mapadocorreapi.cliente.dto.ClienteGetResponseDto;
 import br.com.ifba.mapadocorreapi.cliente.dto.ClientePostRequestDto;
+import br.com.ifba.mapadocorreapi.cliente.dto.ClienteUpdateRequestDto;
 import br.com.ifba.mapadocorreapi.pedido.dto.PedidoGetResponseDto;
 import br.com.ifba.mapadocorreapi.pedido.dto.PedidoPostRequestDto;
 import br.com.ifba.mapadocorreapi.pedido.entity.Pedido;
@@ -23,7 +24,7 @@ public interface ClienteIController {
 
     public ResponseEntity<?> findById(@PathVariable Long id);
 
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid ClientePostRequestDto clientePostRequestDto);
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid ClienteUpdateRequestDto dto);
 
     public ResponseEntity<?> updateSenha(@PathVariable Long id, @RequestParam String senhaAtual, @RequestParam String novaSenha);
 

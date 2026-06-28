@@ -3,6 +3,7 @@ package br.com.ifba.mapadocorreapi.empresario.controller;
 import br.com.ifba.mapadocorreapi.avaliacao.dto.AvaliacaoGetResponseDto;
 import br.com.ifba.mapadocorreapi.empresario.dto.EmpresarioGetResponseDto;
 import br.com.ifba.mapadocorreapi.empresario.dto.EmpresarioPostRequestDto;
+import br.com.ifba.mapadocorreapi.empresario.dto.EmpresarioUpdateRequestDto;
 import br.com.ifba.mapadocorreapi.negocio.dto.NegocioGetResponseDto;
 import br.com.ifba.mapadocorreapi.negocio.dto.NegocioPostRequestDto;
 import br.com.ifba.mapadocorreapi.negocio.entity.Negocio;
@@ -21,7 +22,7 @@ public interface EmpresarioIController {
 
     public ResponseEntity<EmpresarioGetResponseDto> findById(@PathVariable Long id);
 
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody @Valid EmpresarioPostRequestDto dto);
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid EmpresarioUpdateRequestDto dto);
 
     public ResponseEntity<Void> updateSenha(@PathVariable Long id, @RequestParam String senhaAtual,
                                             @RequestParam String novaSenha);

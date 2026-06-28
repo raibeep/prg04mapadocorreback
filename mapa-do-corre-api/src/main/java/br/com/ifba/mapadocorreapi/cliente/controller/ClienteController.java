@@ -5,6 +5,7 @@ import br.com.ifba.mapadocorreapi.avaliacao.dto.AvaliacaoPostRequestDto;
 import br.com.ifba.mapadocorreapi.avaliacao.entity.Avaliacao;
 import br.com.ifba.mapadocorreapi.cliente.dto.ClienteGetResponseDto;
 import br.com.ifba.mapadocorreapi.cliente.dto.ClientePostRequestDto;
+import br.com.ifba.mapadocorreapi.cliente.dto.ClienteUpdateRequestDto;
 import br.com.ifba.mapadocorreapi.cliente.entity.Cliente;
 import br.com.ifba.mapadocorreapi.cliente.service.ClienteIService;
 import br.com.ifba.mapadocorreapi.infrastructure.mapper.ObjectMapperUtil;
@@ -65,17 +66,13 @@ public class ClienteController implements ClienteIController {
 
     @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid ClientePostRequestDto dto) {
-        // Monta o Usuario manualmente a partir do DTO
-        Usuario usuario = new Usuario();
-        usuario.setEmail(dto.getEmail());
-        usuario.setSenha(dto.getSenha());
+    public ResponseEntity<?> update(@PathVariable Long id,
+            @RequestBody @Valid ClienteUpdateRequestDto dto) {
 
-        // Monta o Cliente com os dados pessoais
         Cliente cliente = objectMapperUtil.map(dto, Cliente.class);
-        cliente.setUsuario(usuario);
 
         clienteService.update(id, cliente);
+
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
