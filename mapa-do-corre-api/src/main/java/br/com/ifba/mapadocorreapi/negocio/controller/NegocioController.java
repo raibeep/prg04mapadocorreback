@@ -60,8 +60,25 @@ public class NegocioController implements NegocioIController {
 
     private NegocioGetResponseDto toResponseDto(Negocio negocio) {
         NegocioGetResponseDto dto = objectMapperUtil.map(negocio, NegocioGetResponseDto.class);
-        dto.setCategoriaNome(negocio.getCategoria() != null ? negocio.getCategoria().getNome() : null);
-        dto.setDonoEmail(negocio.getDono() != null ? negocio.getDono().getEmail() : null);
+
+        dto.setCategoriaNome(
+                negocio.getCategoria() != null
+                        ? negocio.getCategoria().getNome()
+                        : null
+        );
+
+        dto.setCategoriaId(
+                negocio.getCategoria() != null
+                        ? negocio.getCategoria().getId()
+                        : null
+        );
+
+        dto.setDonoEmail(
+                negocio.getDono() != null
+                        ? negocio.getDono().getEmail()
+                        : null
+        );
+
         return dto;
     }
 }
