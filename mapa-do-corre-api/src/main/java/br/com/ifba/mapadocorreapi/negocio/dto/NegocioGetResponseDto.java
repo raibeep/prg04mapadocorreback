@@ -36,6 +36,9 @@ public class NegocioGetResponseDto {
     @JsonProperty("categoriaNome")
     private String categoriaNome;
 
+    @JsonProperty("categoriaId")
+    private Long categoriaId;
+
     @JsonProperty("donoEmail")
     private String donoEmail;
 }
