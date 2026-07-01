@@ -19,9 +19,14 @@ public class NegocioService implements NegocioIService{
     public Negocio save(Negocio negocio){
         if(negocioRepository.findByNome(negocio.getNome()).isPresent()){
             throw new BusinessException("Nome de negócio existente.");
-        }else{
-            return negocioRepository.save(negocio);
         }
+        if (negocio.getContato().equals(negocio.getDono().getTelefone())) {
+            throw new BusinessException(
+                    "O telefone do negócio deve ser diferente do telefone do empresário."
+            );
+        }
+
+            return negocioRepository.save(negocio);
     }
 
     @Override
@@ -38,6 +43,12 @@ public class NegocioService implements NegocioIService{
     @Override
     @Transactional
     public Negocio update(Long id, Negocio negocio) {
+        if (negocio.getContato().equals(negocio.getDono().getTelefone())) {
+            throw new BusinessException(
+                    "O telefone do negócio deve ser diferente do telefone do empresário."
+            );
+        }
+
         Negocio negocioExistente = findById(id);
 
         negocioExistente.setNome(negocio.getNome());

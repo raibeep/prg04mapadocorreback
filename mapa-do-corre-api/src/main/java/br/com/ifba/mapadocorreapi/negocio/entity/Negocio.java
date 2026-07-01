@@ -1,5 +1,6 @@
 package br.com.ifba.mapadocorreapi.negocio.entity;
 import br.com.ifba.mapadocorreapi.categoria.entity.Categoria;
+import br.com.ifba.mapadocorreapi.empresario.entity.Empresario;
 import br.com.ifba.mapadocorreapi.enums.TipoNegocio;
 import br.com.ifba.mapadocorreapi.infrastructure.persistence.entity.PersistenceEntity;
 import br.com.ifba.mapadocorreapi.usuario.entity.Usuario;
@@ -24,7 +25,7 @@ public class Negocio extends PersistenceEntity {
 
     @ManyToOne
     @JoinColumn(name = "dono_id")
-    private Usuario dono;
+    private Empresario dono;
 
     @ManyToOne
     @JoinColumn(name = "categoria_id")

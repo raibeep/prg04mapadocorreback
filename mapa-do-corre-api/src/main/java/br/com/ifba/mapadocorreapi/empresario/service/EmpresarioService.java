@@ -9,6 +9,7 @@ import br.com.ifba.mapadocorreapi.infrastructure.exception.BusinessException;
 import br.com.ifba.mapadocorreapi.negocio.entity.Negocio;
 import br.com.ifba.mapadocorreapi.negocio.repository.NegocioRepository;
 import br.com.ifba.mapadocorreapi.perfil.entity.Perfil;
+import br.com.ifba.mapadocorreapi.perfil.repository.PerfilRepository;
 import br.com.ifba.mapadocorreapi.usuario.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +22,9 @@ import java.util.Date;
 
 @RequiredArgsConstructor
 @Service
-public class EmpresarioService implements EmpresarioIService{
+public class EmpresarioService implements EmpresarioIService {
     private final EmpresarioRepository empresarioRepository;
+    private final PerfilRepository perfilRepository;
     private final UsuarioRepository usuarioRepository;
     private final NegocioRepository negocioRepository;
     private final AvaliacaoRepository avaliacaoRepository;
@@ -31,11 +33,11 @@ public class EmpresarioService implements EmpresarioIService{
     @Override
     @Transactional
     public Empresario save(Empresario empresario) {
-        if(empresario.getUsuario() == null){
+        if (empresario.getUsuario() == null) {
             throw new BusinessException("Dados do usuário não informados.");
         }
 
-        if(usuarioRepository.existsByEmail(empresario.getUsuario().getEmail())){
+        if (usuarioRepository.existsByEmail(empresario.getUsuario().getEmail())) {
             throw new BusinessException("Email já cadastrado.");
         }
 
@@ -43,6 +45,8 @@ public class EmpresarioService implements EmpresarioIService{
 
         Perfil perfil = new Perfil();
         perfil.setNivelAcesso(TiposPerfil.EMPRESARIO);
+        perfil = perfilRepository.findByNivelAcesso(TiposPerfil.CLIENTE)
+                .orElseThrow(() -> new BusinessException("Perfil não encontrado."));
 
         empresario.getUsuario().setPerfil(perfil);
 
@@ -100,7 +104,7 @@ public class EmpresarioService implements EmpresarioIService{
     public Negocio cadastrarNegocio(Long empresarioId, Negocio negocio) {
         Empresario empresario = findById(empresarioId);
 
-        negocio.setDono(empresario.getUsuario());
+        negocio.setDono(empresario);
         negocio.setCriadoEm(new Date());
 
         return negocioRepository.save(negocio);

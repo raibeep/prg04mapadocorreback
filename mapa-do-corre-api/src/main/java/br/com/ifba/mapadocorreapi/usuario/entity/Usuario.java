@@ -15,8 +15,8 @@ import java.util.Date;
 @AllArgsConstructor
 @Entity
 public class Usuario extends PersistenceEntity {
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "perfil_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "perfil_id", nullable = false)
     private Perfil perfil;
 
     @Column(unique = true)

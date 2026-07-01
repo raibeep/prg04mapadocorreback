@@ -12,6 +12,7 @@ import br.com.ifba.mapadocorreapi.negocio.repository.NegocioRepository;
 import br.com.ifba.mapadocorreapi.pedido.entity.Pedido;
 import br.com.ifba.mapadocorreapi.pedido.repository.PedidoRepository;
 import br.com.ifba.mapadocorreapi.perfil.entity.Perfil;
+import br.com.ifba.mapadocorreapi.perfil.repository.PerfilRepository;
 import br.com.ifba.mapadocorreapi.usuario.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class ClienteService implements ClienteIService{
     private final ClienteRepository clienteRepository;
+    private final PerfilRepository perfilRepository;
     private final UsuarioRepository usuarioRepository;
     private final PedidoRepository pedidoRepository;
     private final AvaliacaoRepository avaliacaoRepository;
@@ -49,6 +51,8 @@ public class ClienteService implements ClienteIService{
 
         Perfil perfil = new Perfil();
         perfil.setNivelAcesso(TiposPerfil.CLIENTE);
+        perfil = perfilRepository.findByNivelAcesso(TiposPerfil.EMPRESARIO)
+                .orElseThrow(() -> new BusinessException("Perfil não encontrado."));
         cliente.getUsuario().setPerfil(perfil);
 
         return clienteRepository.save(cliente);
