@@ -176,9 +176,10 @@ O back-end do **Mapa do Corre** é responsável por toda a lógica de negócio d
 
 ---
 
+
 ## 🔗 Deploy
 
-> 🚧 Link da API: _em breve_
+> 🔗 https://prg04mapadocorreback-production.up.railway.app
 
 ---
 
