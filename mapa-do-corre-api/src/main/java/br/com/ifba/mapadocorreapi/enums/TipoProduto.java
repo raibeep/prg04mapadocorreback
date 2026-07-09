@@ -1,8 +1,9 @@
 package br.com.ifba.mapadocorreapi.enums;
 
-public enum TipoNegocio {
+public enum TipoProduto {
     ESTABELECIMENTO,
     EVENTO,
     SERVICO,
-    PRODUTO
+    PRODUTO,
+    ALIMENTO
 }
