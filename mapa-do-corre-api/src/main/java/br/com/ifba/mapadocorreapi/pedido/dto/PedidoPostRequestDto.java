@@ -1,20 +1,12 @@
 package br.com.ifba.mapadocorreapi.pedido.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import java.math.BigDecimal;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
 public class PedidoPostRequestDto {
-
-    @JsonProperty("valorTotal")
-    @NotNull(message = "O valor total é obrigatório")
-    @Positive(message = "O valor total deve ser positivo")
-    private BigDecimal valorTotal;
+    @NotNull(message = "Endereço obrigatório.")
+    private Long enderecoId;
 }
