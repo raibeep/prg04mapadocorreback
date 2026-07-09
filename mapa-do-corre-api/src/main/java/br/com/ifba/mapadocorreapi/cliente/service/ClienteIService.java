@@ -21,5 +21,4 @@ public interface ClienteIService {
 
     public Avaliacao avaliarNegocio(Long clienteId, Long negocioId, Avaliacao avaliacao);
 
-    public Pedido realizarPedido(Long clienteId, Long negocioId, Pedido pedido);
-}
+    Pedido realizarPedido(Long clienteId, Pedido pedido);}

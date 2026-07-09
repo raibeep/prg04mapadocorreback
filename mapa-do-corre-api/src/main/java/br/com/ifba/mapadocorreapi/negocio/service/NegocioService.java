@@ -56,7 +56,6 @@ public class NegocioService implements NegocioIService{
         negocioExistente.setDescricao(negocio.getDescricao());
         negocioExistente.setFoto(negocio.getFoto());
         negocioExistente.setCategoria(negocio.getCategoria());
-        negocioExistente.setTipo(negocio.getTipo());
 
         return negocioRepository.save(negocioExistente);
     }

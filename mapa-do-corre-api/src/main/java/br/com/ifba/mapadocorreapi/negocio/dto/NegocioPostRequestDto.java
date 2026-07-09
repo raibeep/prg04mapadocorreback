@@ -1,6 +1,6 @@
 package br.com.ifba.mapadocorreapi.negocio.dto;
 
-import br.com.ifba.mapadocorreapi.enums.TipoNegocio;
+import br.com.ifba.mapadocorreapi.enums.TipoProduto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -30,7 +30,7 @@ public class NegocioPostRequestDto {
 
     @JsonProperty("tipo")
     @NotNull(message = "O tipo de negócio é obrigatório")
-    private TipoNegocio tipo;
+    private TipoProduto tipo;
 
     @JsonProperty("categoriaId")
     @NotNull(message = "A categoria é obrigatória")

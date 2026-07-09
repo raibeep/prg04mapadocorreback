@@ -45,28 +45,21 @@ public class EmpresarioController implements EmpresarioIController{
         Empresario salvo = empresarioService.save(empresario);
 
         EmpresarioGetResponseDto response = objectMapperUtil.map(salvo, EmpresarioGetResponseDto.class);
-        response.setEmail(salvo.getUsuario().getEmail());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping(path = "/findall", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/findall")
     public ResponseEntity<Page<EmpresarioGetResponseDto>> findAll(Pageable pageable) {
-        return ResponseEntity.ok(
-                empresarioService.findAll(pageable)
-                        .map(e -> {
-                            EmpresarioGetResponseDto dto = objectMapperUtil.map(e, EmpresarioGetResponseDto.class);
-                            dto.setEmail(e.getUsuario().getEmail());
-                            return dto;
-                        }));
+        return ResponseEntity.ok(empresarioService.findAll(pageable).map(e -> objectMapperUtil
+                .map(e, EmpresarioGetResponseDto.class))
+        );
     }
 
     @GetMapping("/findbyid/{id}")
     public ResponseEntity<EmpresarioGetResponseDto> findById(@PathVariable Long id) {
-        Empresario empresario = empresarioService.findById(id);
-        EmpresarioGetResponseDto response = objectMapperUtil.map(empresario, EmpresarioGetResponseDto.class);
-        response.setEmail(empresario.getUsuario().getEmail());
-        return ResponseEntity.ok(response);
+
+        return ResponseEntity.ok(objectMapperUtil.map(empresarioService.findById(id), EmpresarioGetResponseDto.class));
     }
 
     @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -81,24 +74,23 @@ public class EmpresarioController implements EmpresarioIController{
     }
 
     @PatchMapping(value = "/update/{id}/senha")
-    public ResponseEntity<Void> updateSenha(
-            @PathVariable Long id,
-            @RequestParam String senhaAtual,
-            @RequestParam String novaSenha) {
+    public ResponseEntity<Void> updateSenha(@PathVariable Long id, @RequestParam String senhaAtual,
+                                            @RequestParam String novaSenha) {
         empresarioService.updateSenha(id, senhaAtual, novaSenha);
+
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         empresarioService.delete(id);
+
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{empresarioId}/negocios")
-    public ResponseEntity<NegocioGetResponseDto> cadastrarNegocio(
-            @PathVariable Long empresarioId,
-            @RequestBody @Valid NegocioPostRequestDto dto) {
+    public ResponseEntity<NegocioGetResponseDto> cadastrarNegocio(@PathVariable Long empresarioId,
+                                                                  @RequestBody @Valid NegocioPostRequestDto dto) {
 
         Negocio negocio = objectMapperUtil.map(dto, Negocio.class);
 
@@ -108,31 +100,18 @@ public class EmpresarioController implements EmpresarioIController{
         Negocio salvo = empresarioService.cadastrarNegocio(empresarioId, negocio);
 
         NegocioGetResponseDto response = objectMapperUtil.map(salvo, NegocioGetResponseDto.class);
-        response.setCategoriaNome(salvo.getCategoria().getNome());
-        response.setDonoEmail(salvo.getDono().getEmail());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PatchMapping("/{empresarioId}/avaliacoes/{avaliacaoId}/resposta")
-    public ResponseEntity<AvaliacaoGetResponseDto> responderAvaliacao(
-            @PathVariable Long empresarioId,
-            @PathVariable Long avaliacaoId,
-            @RequestParam String resposta) {
+    public ResponseEntity<AvaliacaoGetResponseDto> responderAvaliacao(@PathVariable Long empresarioId, @PathVariable Long avaliacaoId,
+                                                                      @RequestParam String resposta) {
 
         Avaliacao respondida = empresarioService.responderAvaliacao(empresarioId, avaliacaoId, resposta);
 
-        // Converte a entidade retornada pelo service em DTO para não expor dados sensíveis na resposta
-        AvaliacaoGetResponseDto response = new AvaliacaoGetResponseDto();
-        response.setId(respondida.getId());
-        response.setNota(respondida.getNota());
-        response.setComentario(respondida.getComentario());
-        response.setResposta(respondida.getResposta());
-        response.setCriadoEm(respondida.getCriadoEm());
-        response.setAutorEmail(respondida.getAutor().getEmail());
-        response.setNegocioNome(respondida.getNegocio().getNome());
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(objectMapperUtil
+                .map(respondida, AvaliacaoGetResponseDto.class));
     }
 
     @GetMapping("/{empresarioId}/negocios")
@@ -142,8 +121,6 @@ public class EmpresarioController implements EmpresarioIController{
         if (negocio == null) return ResponseEntity.noContent().build();
 
         NegocioGetResponseDto response = objectMapperUtil.map(negocio, NegocioGetResponseDto.class);
-        response.setCategoriaNome(negocio.getCategoria().getNome());
-        response.setDonoEmail(negocio.getDono().getEmail());
 
         return ResponseEntity.ok(response);
     }

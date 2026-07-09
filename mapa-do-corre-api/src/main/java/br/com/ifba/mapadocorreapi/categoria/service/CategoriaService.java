@@ -28,9 +28,7 @@ public class CategoriaService implements CategoriaIService {
 
         if (categoriaRepository.findByNome(categoria.getNome()).isPresent()) {
 
-            throw new BusinessException(
-                    "Categoria já cadastrada"
-            );
+            throw new BusinessException("Categoria já cadastrada");
         } else {
 
             log.info("Salvando o objeto Categoria");
@@ -51,8 +49,7 @@ public class CategoriaService implements CategoriaIService {
     public Categoria findById(Long id) {
 
         log.info("Buscando categoria por ID");
-        return categoriaRepository.findById(id).orElseThrow(() ->
-                new BusinessException("Categoria não encontrada"));
+        return categoriaRepository.findById(id).orElseThrow(() -> new BusinessException("Categoria não encontrada"));
     }
 
     @Override

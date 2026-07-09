@@ -1,6 +1,6 @@
 package br.com.ifba.mapadocorreapi.negocio.dto;
 
-import br.com.ifba.mapadocorreapi.enums.TipoNegocio;
+import br.com.ifba.mapadocorreapi.enums.TipoProduto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,7 +28,7 @@ public class NegocioGetResponseDto {
     private String foto;
 
     @JsonProperty("tipo")
-    private TipoNegocio tipo;
+    private TipoProduto tipo;
 
     @JsonProperty("criadoEm")
     private Date criadoEm;

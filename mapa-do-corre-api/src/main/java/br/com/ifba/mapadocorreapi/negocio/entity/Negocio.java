@@ -1,12 +1,15 @@
 package br.com.ifba.mapadocorreapi.negocio.entity;
 import br.com.ifba.mapadocorreapi.categoria.entity.Categoria;
 import br.com.ifba.mapadocorreapi.empresario.entity.Empresario;
-import br.com.ifba.mapadocorreapi.enums.TipoNegocio;
+import br.com.ifba.mapadocorreapi.endereco.entity.Endereco;
 import br.com.ifba.mapadocorreapi.infrastructure.persistence.entity.PersistenceEntity;
-import br.com.ifba.mapadocorreapi.usuario.entity.Usuario;
+import br.com.ifba.mapadocorreapi.produto.entity.Produto;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,9 +23,6 @@ public class Negocio extends PersistenceEntity {
     private String foto;
     private Date criadoEm;
 
-    @Enumerated(EnumType.STRING)
-    private TipoNegocio tipo;
-
     @ManyToOne
     @JoinColumn(name = "dono_id")
     private Empresario dono;
@@ -30,4 +30,14 @@ public class Negocio extends PersistenceEntity {
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
+
+    @OneToMany(mappedBy = "negocio")
+    private List<Produto> produtos = new ArrayList<>();
+
+    @OneToMany(
+            mappedBy = "negocio",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Endereco> enderecos = new ArrayList<>();
 }

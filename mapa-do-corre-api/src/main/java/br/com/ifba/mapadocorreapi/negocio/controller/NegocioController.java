@@ -28,15 +28,16 @@ public class NegocioController implements NegocioIController {
 
     @GetMapping(path = "/findall", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<NegocioGetResponseDto>> findAll(Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(negocioService.findAll(pageable)
-                        .map(this::toResponseDto));
+
+        return ResponseEntity.ok(negocioService.findAll(pageable).map(n -> objectMapperUtil
+                .map(n, NegocioGetResponseDto.class))
+        );
     }
 
     @GetMapping("/findbyid/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(toResponseDto(negocioService.findById(id)));
+    public ResponseEntity<NegocioGetResponseDto> findById(@PathVariable Long id) {
+
+        return ResponseEntity.ok(objectMapperUtil.map(negocioService.findById(id), NegocioGetResponseDto.class));
     }
 
     @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -56,29 +57,5 @@ public class NegocioController implements NegocioIController {
     public ResponseEntity<?> delete(@PathVariable Long id) {
         negocioService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    private NegocioGetResponseDto toResponseDto(Negocio negocio) {
-        NegocioGetResponseDto dto = objectMapperUtil.map(negocio, NegocioGetResponseDto.class);
-
-        dto.setCategoriaNome(
-                negocio.getCategoria() != null
-                        ? negocio.getCategoria().getNome()
-                        : null
-        );
-
-        dto.setCategoriaId(
-                negocio.getCategoria() != null
-                        ? negocio.getCategoria().getId()
-                        : null
-        );
-
-        dto.setDonoEmail(
-                negocio.getDono() != null
-                        ? negocio.getDono().getEmail()
-                        : null
-        );
-
-        return dto;
     }
 }

@@ -14,29 +14,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-/*
- * @RestController
- * Diz ao Spring que essa classe é um controller REST.
- *
- * Ou seja:
- * ela vai receber requisições HTTP
- * e devolver respostas em JSON.
- */
 @RestController
-
-/*
- * @RequestMapping("/categorias")
- *
- * Define a rota base da API.
- *
- * Tudo dentro dessa classe começará com:
- * /categorias
- *
- * Exemplos:
- * GET    /categorias
- * POST   /categorias
- * GET    /categorias/1
- */
 @RequestMapping("/categorias")
 @RequiredArgsConstructor
 public class CategoriaController implements CategoriaIController {
@@ -44,16 +22,6 @@ public class CategoriaController implements CategoriaIController {
     private final CategoriaIService categoriaService;
     private final ObjectMapperUtil objectMapperUtil;
 
-    /*
-     * @PostMapping
-     *
-     * Endpoint responsável por SALVAR dados.
-     *
-     * Responde ao método HTTP POST.
-     *
-     * URL:
-     * POST /categorias
-     */
     @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -66,46 +34,23 @@ public class CategoriaController implements CategoriaIController {
                         CategoriaGetResponseDto.class));
     }
 
-    /*
-     * @GetMapping
-     *
-     * Endpoint responsável por LISTAR dados.
-     *
-     * Responde ao método HTTP GET.
-     *
-     * URL:
-     * GET /categorias
-     */
     @GetMapping(path = "/findall", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<CategoriaGetResponseDto>> findAll(Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(categoriaService.findAll(pageable)
+        return ResponseEntity.status(HttpStatus.OK).body(categoriaService.findAll(pageable)
                         .map(c -> objectMapperUtil.map(c, CategoriaGetResponseDto.class)));
     }
 
     @GetMapping("/findbyid/{id}") //irá buscar pelo id
     public ResponseEntity<?> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(objectMapperUtil.map(
-                        categoriaService.findById(id),
-                        CategoriaGetResponseDto.class));
+                .body(objectMapperUtil.map(categoriaService.findById(id), CategoriaGetResponseDto.class));
     }
 
-    /*
-     * @PutMapping("/{id}")
-     *
-     * Endpoint responsável por ATUALIZAR dados.
-     *
-     * Usa o método HTTP PUT.
-     *
-     * Exemplo:
-     * PUT /categorias/10
-     */
     @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid CategoriaPostRequestDto categoriaPostRequestDto) {
         categoriaService.update(id, objectMapperUtil.map(categoriaPostRequestDto, Categoria.class));
+
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -114,6 +59,7 @@ public class CategoriaController implements CategoriaIController {
     //ele é responsável por deletar dados
     public ResponseEntity<?> delete(@PathVariable Long id) {
         categoriaService.delete(id);
+
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

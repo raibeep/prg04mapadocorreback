@@ -65,8 +65,7 @@ public class ClienteService implements ClienteIService{
 
     @Override
     public Cliente findById(Long id) {
-        return clienteRepository.findById(id).orElseThrow(() ->
-            new BusinessException("Cliente não encontrado!"));
+        return clienteRepository.findById(id).orElseThrow(() -> new BusinessException("Cliente não encontrado!"));
     }
 
     @Override
@@ -110,10 +109,6 @@ public class ClienteService implements ClienteIService{
         Negocio negocio = negocioRepository.findById(negocioId)
                 .orElseThrow(() -> new BusinessException("Negócio não encontrado."));
 
-        if (avaliacao.getNota() < 1 || avaliacao.getNota() > 5) {
-            throw new BusinessException("A nota deve ser entre 1 e 5.");
-        }
-
         avaliacao.setAutor(cliente.getUsuario());
         avaliacao.setNegocio(negocio);
         avaliacao.setCriadoEm(new Date());
@@ -123,16 +118,13 @@ public class ClienteService implements ClienteIService{
 
     @Override
     @Transactional
-    public Pedido realizarPedido(Long clienteId, Long negocioId, Pedido pedido) {
+    public Pedido realizarPedido(Long clienteId, Pedido pedido) {
+
         Cliente cliente = findById(clienteId);
 
-        Negocio negocio = negocioRepository.findById(negocioId)
-                .orElseThrow(() -> new BusinessException("Negócio não encontrado."));
-
-        pedido.setCliente(cliente.getUsuario());
-        pedido.setNegocio(negocio);
-        pedido.setStatus(StatusPedido.PENDENTE);
+        pedido.setCliente(cliente);
         pedido.setCriadoEm(new Date());
+        pedido.setStatus(StatusPedido.PENDENTE);
 
         return pedidoRepository.save(pedido);
     }

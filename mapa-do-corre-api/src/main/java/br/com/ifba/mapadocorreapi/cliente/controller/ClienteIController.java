@@ -32,5 +32,4 @@ public interface ClienteIController {
 
     public ResponseEntity<AvaliacaoGetResponseDto> avaliarNegocio(@PathVariable Long clienteId, @PathVariable Long negocioId, @RequestBody @Valid AvaliacaoPostRequestDto dto);
 
-    public ResponseEntity<PedidoGetResponseDto> realizarPedido(@PathVariable Long clienteId, @PathVariable Long negocioId, @RequestBody @Valid PedidoPostRequestDto dto);
-}
+    ResponseEntity<PedidoGetResponseDto> realizarPedido(Long clienteId, PedidoPostRequestDto dto);}
