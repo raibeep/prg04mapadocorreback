@@ -19,7 +19,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository.findByEmail(email)
+        Usuario usuario = usuarioRepository.findByEmailWithPerfil(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado."));
 
         // Passa o perfil como role pro Spring Security
