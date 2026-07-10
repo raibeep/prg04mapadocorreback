@@ -15,6 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/produtos")
 @RequiredArgsConstructor
@@ -96,5 +98,14 @@ public class ProdutoController implements ProdutoIController {
         produtoService.delete(id);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/negocio/{negocioId}")
+    public ResponseEntity<List<ProdutoGetResponseDto>> findByNegocio(@PathVariable Long negocioId) {
+
+        List<ProdutoGetResponseDto> response = produtoService.findByNegocioId(negocioId).stream()
+                .map(produto -> objectMapperUtil.map(produto, ProdutoGetResponseDto.class)).toList();
+
+        return ResponseEntity.ok(response);
     }
 }

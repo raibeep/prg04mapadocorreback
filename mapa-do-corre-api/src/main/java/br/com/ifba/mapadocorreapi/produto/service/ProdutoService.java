@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -67,5 +68,10 @@ public class ProdutoService implements ProdutoIService{
         }
 
         produtoRepository.delete(produto);
+    }
+
+    @Override
+    public List<Produto> findByNegocioId(Long negocioId) {
+        return produtoRepository.findByNegocioId(negocioId);
     }
 }
