@@ -1,7 +1,9 @@
 package br.com.ifba.mapadocorreapi.negocio.dto;
 
 import br.com.ifba.mapadocorreapi.enums.TipoProduto;
+import br.com.ifba.mapadocorreapi.usuario.dto.UsuarioPostRequestDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

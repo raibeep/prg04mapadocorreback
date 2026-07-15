@@ -35,12 +35,8 @@ public class EmpresarioController implements EmpresarioIController{
     @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmpresarioGetResponseDto> save(@RequestBody @Valid EmpresarioPostRequestDto dto) {
-        Usuario usuario = new Usuario();
-        usuario.setEmail(dto.getEmail());
-        usuario.setSenha(dto.getSenha());
 
         Empresario empresario = objectMapperUtil.map(dto, Empresario.class);
-        empresario.setUsuario(usuario);
 
         Empresario salvo = empresarioService.save(empresario);
 

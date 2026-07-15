@@ -1,6 +1,8 @@
 package br.com.ifba.mapadocorreapi.cliente.dto;
 
+import br.com.ifba.mapadocorreapi.usuario.dto.UsuarioPostRequestDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -31,13 +33,6 @@ public class ClientePostRequestDto {
     @JsonProperty("bio")
     private String bio;
 
-    @JsonProperty("email")
-    @NotBlank(message = "O email é obrigatório")
-    @Email(message = "Informe um email válido")
-    private String email;
-
-    @JsonProperty("senha")
-    @NotBlank(message = "A senha é obrigatória")
-    @Size(min = 8, message = "A senha deve ter no mínimo 8 caracteres")
-    private String senha;
+    @Valid
+    private UsuarioPostRequestDto usuario;
 }
