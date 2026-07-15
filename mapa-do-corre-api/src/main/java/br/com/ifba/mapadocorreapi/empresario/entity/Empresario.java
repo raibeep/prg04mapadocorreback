@@ -1,6 +1,7 @@
 package br.com.ifba.mapadocorreapi.empresario.entity;
 
 import br.com.ifba.mapadocorreapi.endereco.entity.Endereco;
+import br.com.ifba.mapadocorreapi.negocio.entity.Negocio;
 import br.com.ifba.mapadocorreapi.pessoa.entity.Pessoa;
 import br.com.ifba.mapadocorreapi.usuario.entity.Usuario;
 import jakarta.persistence.*;
@@ -22,10 +23,9 @@ public class Empresario extends Pessoa {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    @OneToMany(
-            mappedBy = "empresario",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+    @OneToOne(mappedBy = "dono", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Negocio negocio;
+
+    @OneToMany(mappedBy = "empresario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Endereco> enderecos = new ArrayList<>();
 }

@@ -126,6 +126,6 @@ public class EmpresarioService implements EmpresarioIService {
     @Override
     public Negocio getNegocioDoEmpresario(Long empresarioId) {
         Empresario empresario = findById(empresarioId);
-        return negocioRepository.findByDonoId(empresario.getUsuario().getId()).orElse(null);
+        return negocioRepository.findByDonoId(empresario.getId()).orElse(null);
     }
 }

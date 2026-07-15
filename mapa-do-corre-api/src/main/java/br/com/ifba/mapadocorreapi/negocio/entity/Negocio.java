@@ -18,13 +18,16 @@ import java.util.List;
 @Entity
 public class Negocio extends PersistenceEntity {
     private String nome;
+
+    @Column(columnDefinition = "TEXT")
     private String descricao;
+
     private String contato;
     private String foto;
     private Date criadoEm;
 
-    @ManyToOne
-    @JoinColumn(name = "dono_id")
+    @OneToOne
+    @JoinColumn(name = "dono_id", referencedColumnName = "id")
     private Empresario dono;
 
     @ManyToOne
@@ -34,10 +37,6 @@ public class Negocio extends PersistenceEntity {
     @OneToMany(mappedBy = "negocio")
     private List<Produto> produtos = new ArrayList<>();
 
-    @OneToMany(
-            mappedBy = "negocio",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
+    @OneToMany(mappedBy = "negocio", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Endereco> enderecos = new ArrayList<>();
 }
