@@ -45,10 +45,12 @@ public class NegocioService implements NegocioIService{
     public Negocio update(Long id, Negocio negocio) {
         Negocio negocioExistente = findById(id);
 
-        if (negocio.getContato().equals(negocio.getDono().getTelefone())) {
-            throw new BusinessException(
-                    "O telefone do negócio deve ser diferente do telefone do empresário."
-            );
+        if (negocioExistente.getDono() != null && negocioExistente.getDono().getTelefone() != null) {
+            if (negocio.getContato().equals(negocioExistente.getDono().getTelefone())) {
+                throw new BusinessException(
+                        "O telefone do negócio deve ser diferente do telefone do empresário."
+                );
+            }
         }
 
         negocioExistente.setNome(negocio.getNome());
