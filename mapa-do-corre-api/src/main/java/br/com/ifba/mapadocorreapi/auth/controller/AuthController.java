@@ -61,7 +61,7 @@ public class AuthController {
             if (empresario != null) {
                 perfilId = empresario.getId();
                 nome = empresario.getNome();
-                temNegocio = negocioRepository.existsByDonoId(usuario.getId());
+                temNegocio = negocioRepository.existsByDonoId(empresario.getId());
             }
         } else if ("CLIENTE".equals(perfil)) {
             var cliente = clienteRepository.findByUsuarioId(usuario.getId()).orElse(null);
