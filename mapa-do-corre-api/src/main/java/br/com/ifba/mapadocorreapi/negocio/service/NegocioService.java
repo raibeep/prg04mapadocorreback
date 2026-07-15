@@ -43,13 +43,13 @@ public class NegocioService implements NegocioIService{
     @Override
     @Transactional
     public Negocio update(Long id, Negocio negocio) {
+        Negocio negocioExistente = findById(id);
+
         if (negocio.getContato().equals(negocio.getDono().getTelefone())) {
             throw new BusinessException(
                     "O telefone do negócio deve ser diferente do telefone do empresário."
             );
         }
-
-        Negocio negocioExistente = findById(id);
 
         negocioExistente.setNome(negocio.getNome());
         negocioExistente.setContato(negocio.getContato());
