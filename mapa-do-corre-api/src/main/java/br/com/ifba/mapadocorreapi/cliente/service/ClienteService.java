@@ -51,7 +51,7 @@ public class ClienteService implements ClienteIService{
 
         Perfil perfil = new Perfil();
         perfil.setNivelAcesso(TiposPerfil.CLIENTE);
-        perfil = perfilRepository.findByNivelAcesso(TiposPerfil.EMPRESARIO)
+        perfil = perfilRepository.findByNivelAcesso(TiposPerfil.CLIENTE)
                 .orElseThrow(() -> new BusinessException("Perfil não encontrado."));
         cliente.getUsuario().setPerfil(perfil);
 

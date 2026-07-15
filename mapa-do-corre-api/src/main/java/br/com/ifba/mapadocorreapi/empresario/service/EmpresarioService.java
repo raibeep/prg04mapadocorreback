@@ -45,7 +45,7 @@ public class EmpresarioService implements EmpresarioIService {
 
         Perfil perfil = new Perfil();
         perfil.setNivelAcesso(TiposPerfil.EMPRESARIO);
-        perfil = perfilRepository.findByNivelAcesso(TiposPerfil.CLIENTE)
+        perfil = perfilRepository.findByNivelAcesso(TiposPerfil.EMPRESARIO)
                 .orElseThrow(() -> new BusinessException("Perfil não encontrado."));
 
         empresario.getUsuario().setPerfil(perfil);
