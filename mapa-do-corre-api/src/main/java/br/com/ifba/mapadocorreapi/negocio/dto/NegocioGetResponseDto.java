@@ -27,9 +27,6 @@ public class NegocioGetResponseDto {
     @JsonProperty("foto")
     private String foto;
 
-    @JsonProperty("tipo")
-    private TipoProduto tipo;
-
     @JsonProperty("criadoEm")
     private Date criadoEm;
 

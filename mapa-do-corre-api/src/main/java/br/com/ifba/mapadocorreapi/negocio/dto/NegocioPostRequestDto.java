@@ -30,10 +30,6 @@ public class NegocioPostRequestDto {
     @JsonProperty("foto")
     private String foto;
 
-    @JsonProperty("tipo")
-    @NotNull(message = "O tipo de negócio é obrigatório")
-    private TipoProduto tipo;
-
     @JsonProperty("categoriaId")
     @NotNull(message = "A categoria é obrigatória")
     private Long categoriaId;
