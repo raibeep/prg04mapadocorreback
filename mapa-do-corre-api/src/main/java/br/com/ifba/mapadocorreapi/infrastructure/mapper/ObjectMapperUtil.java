@@ -19,6 +19,8 @@ import br.com.ifba.mapadocorreapi.produto.entity.Produto;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Component;
+import br.com.ifba.mapadocorreapi.pedido.dto.PedidoPostRequestDto;
+import org.modelmapper.Converter;
 
 import java.util.Collection;
 import java.util.List;
@@ -173,6 +175,32 @@ public class ObjectMapperUtil {
                     );
 
                 });
+
+        // PedidoPostRequestDto -> Pedido
+        Converter<PedidoPostRequestDto, Pedido> pedidoConverter = context -> {
+
+            PedidoPostRequestDto source = context.getSource();
+
+            if (source == null) {
+                return null;
+            }
+
+            Pedido pedido = new Pedido();
+
+            if (source.getEnderecoId() != null) {
+
+                Endereco endereco = new Endereco();
+                endereco.setId(source.getEnderecoId());
+
+                pedido.setEndereco(endereco);
+
+            }
+
+            return pedido;
+
+        };
+
+        MODEL_MAPPER.addConverter(pedidoConverter);
 
     }
 

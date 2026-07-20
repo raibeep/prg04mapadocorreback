@@ -2,6 +2,8 @@ package br.com.ifba.mapadocorreapi.pedido.entity;
 
 import br.com.ifba.mapadocorreapi.cliente.entity.Cliente;
 import br.com.ifba.mapadocorreapi.endereco.entity.Endereco;
+import br.com.ifba.mapadocorreapi.enums.MetodoPagamento;
+import br.com.ifba.mapadocorreapi.enums.StatusPagamento;
 import br.com.ifba.mapadocorreapi.enums.StatusPedido;
 import br.com.ifba.mapadocorreapi.infrastructure.persistence.entity.PersistenceEntity;
 import br.com.ifba.mapadocorreapi.itempedido.entity.ItemPedido;
@@ -36,6 +38,12 @@ public class Pedido extends PersistenceEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
+
+    @Enumerated(EnumType.STRING)
+    private MetodoPagamento metodoPagamento;
+
+    @Enumerated(EnumType.STRING)
+    private StatusPagamento statusPagamento;
 
     @OneToMany(mappedBy = "pedido",
             cascade = CascadeType.ALL,

@@ -2,10 +2,16 @@ package br.com.ifba.mapadocorreapi.pedido.service;
 
 import br.com.ifba.mapadocorreapi.cliente.entity.Cliente;
 import br.com.ifba.mapadocorreapi.cliente.repository.ClienteRepository;
+import br.com.ifba.mapadocorreapi.endereco.entity.Endereco;
+import br.com.ifba.mapadocorreapi.endereco.repository.EnderecoRepository;
+import br.com.ifba.mapadocorreapi.enums.StatusPagamento;
 import br.com.ifba.mapadocorreapi.enums.StatusPedido;
 import br.com.ifba.mapadocorreapi.infrastructure.exception.BusinessException;
+import br.com.ifba.mapadocorreapi.itempedido.entity.ItemPedido;
 import br.com.ifba.mapadocorreapi.pedido.entity.Pedido;
 import br.com.ifba.mapadocorreapi.pedido.repository.PedidoRepository;
+import br.com.ifba.mapadocorreapi.produto.entity.Produto;
+import br.com.ifba.mapadocorreapi.produto.repository.ProdutoRepository;
 import br.com.ifba.mapadocorreapi.usuario.entity.Usuario;
 import br.com.ifba.mapadocorreapi.usuario.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
@@ -26,6 +32,8 @@ public class PedidoService implements PedidoIService {
     private final PedidoRepository pedidoRepository;
     private final UsuarioRepository usuarioRepository;
     private final ClienteRepository clienteRepository;
+    private final ProdutoRepository produtoRepository;
+    private final EnderecoRepository enderecoRepository;
 
     @Override
     @Transactional
@@ -46,9 +54,47 @@ public class PedidoService implements PedidoIService {
 
         pedido.setCliente(cliente);
 
+        if (pedido.getEndereco() == null || pedido.getEndereco().getId() == null) {
+            throw new BusinessException("Endereço não informado.");
+        }
+
+        Endereco endereco = enderecoRepository.findById(pedido.getEndereco().getId())
+                .orElseThrow(() ->
+                        new BusinessException("Endereço não encontrado."));
+
+        pedido.setEndereco(endereco);
+
+        if (pedido.getItens() == null || pedido.getItens().isEmpty()) {
+            throw new BusinessException("O pedido deve possuir pelo menos um item.");
+        }
+
         pedido.setCriadoEm(new Date());
         pedido.setStatus(StatusPedido.PENDENTE);
-        pedido.setValorTotal(BigDecimal.ZERO);
+        pedido.setStatusPagamento(StatusPagamento.PENDENTE);
+
+        BigDecimal valorTotal = BigDecimal.ZERO;
+
+        for (ItemPedido item : pedido.getItens()) {
+
+            if (item.getQuantidade() == null || item.getQuantidade() <= 0) {
+                throw new BusinessException("Quantidade inválida para um dos itens.");
+            }
+
+            Produto produto = produtoRepository.findById(item.getProduto().getId())
+                    .orElseThrow(() ->
+                            new BusinessException("Produto não encontrado."));
+
+            item.setProduto(produto);
+            item.setPedido(pedido);
+            item.setPrecoUnitario(produto.getPreco());
+
+            BigDecimal subtotal = produto.getPreco()
+                    .multiply(BigDecimal.valueOf(item.getQuantidade()));
+
+            valorTotal = valorTotal.add(subtotal);
+        }
+
+        pedido.setValorTotal(valorTotal);
 
         return pedidoRepository.save(pedido);
     }
