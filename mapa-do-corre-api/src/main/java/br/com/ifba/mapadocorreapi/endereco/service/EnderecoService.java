@@ -70,4 +70,9 @@ public class EnderecoService implements EnderecoIService {
         enderecoRepository.delete(findById(id));
     }
 
+    @Override
+    public Page<Endereco> findByClienteId(Long clienteId, Pageable pageable) {
+        return enderecoRepository.findByClienteId(clienteId, pageable);
+    }
+
 }

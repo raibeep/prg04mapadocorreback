@@ -11,6 +11,8 @@ public interface EnderecoIService {
 
     Page<Endereco> findAll(Pageable pageable);
 
+    Page<Endereco> findByClienteId(Long clienteId, Pageable pageable);
+
     Endereco update(Long id, Endereco endereco);
 
     void delete(Long id);

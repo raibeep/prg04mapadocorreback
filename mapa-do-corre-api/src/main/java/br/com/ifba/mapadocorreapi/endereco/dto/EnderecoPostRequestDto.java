@@ -21,4 +21,6 @@ public class EnderecoPostRequestDto {
     private String estado;
 
     private Long negocioId;
+
+    private Long clienteId;
 }

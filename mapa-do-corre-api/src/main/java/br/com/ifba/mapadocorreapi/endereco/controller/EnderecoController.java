@@ -5,7 +5,6 @@ import br.com.ifba.mapadocorreapi.endereco.dto.EnderecoPostRequestDto;
 import br.com.ifba.mapadocorreapi.endereco.entity.Endereco;
 import br.com.ifba.mapadocorreapi.endereco.service.EnderecoIService;
 import br.com.ifba.mapadocorreapi.infrastructure.mapper.ObjectMapperUtil;
-import br.com.ifba.mapadocorreapi.negocio.service.NegocioIService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 public class EnderecoController implements EnderecoIController {
 
     private final EnderecoIService enderecoService;
-    private final NegocioIService negocioService;
     private final ObjectMapperUtil objectMapperUtil;
 
     @Override
@@ -33,12 +31,6 @@ public class EnderecoController implements EnderecoIController {
     public ResponseEntity<?> save(@RequestBody @Valid EnderecoPostRequestDto dto) {
 
         Endereco endereco = objectMapperUtil.map(dto, Endereco.class);
-
-        if (dto.getNegocioId() != null) {
-            endereco.setNegocio(
-                    negocioService.findById(dto.getNegocioId())
-            );
-        }
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(
@@ -55,6 +47,17 @@ public class EnderecoController implements EnderecoIController {
 
         return ResponseEntity.ok(
                 enderecoService.findAll(pageable)
+                        .map(e -> objectMapperUtil.map(e, EnderecoGetResponseDto.class))
+        );
+    }
+
+    @GetMapping("/findbycliente/{clienteId}")
+    public ResponseEntity<Page<EnderecoGetResponseDto>> findByCliente(
+            @PathVariable Long clienteId,
+            Pageable pageable) {
+
+        return ResponseEntity.ok(
+                enderecoService.findByClienteId(clienteId, pageable)
                         .map(e -> objectMapperUtil.map(e, EnderecoGetResponseDto.class))
         );
     }
@@ -78,12 +81,6 @@ public class EnderecoController implements EnderecoIController {
             @RequestBody @Valid EnderecoPostRequestDto dto) {
 
         Endereco endereco = objectMapperUtil.map(dto, Endereco.class);
-
-        if (dto.getNegocioId() != null) {
-            endereco.setNegocio(
-                    negocioService.findById(dto.getNegocioId())
-            );
-        }
 
         enderecoService.update(id, endereco);
 

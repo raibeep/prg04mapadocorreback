@@ -7,6 +7,7 @@ import br.com.ifba.mapadocorreapi.cliente.entity.Cliente;
 import br.com.ifba.mapadocorreapi.empresario.dto.EmpresarioGetResponseDto;
 import br.com.ifba.mapadocorreapi.empresario.entity.Empresario;
 import br.com.ifba.mapadocorreapi.endereco.dto.EnderecoGetResponseDto;
+import br.com.ifba.mapadocorreapi.endereco.dto.EnderecoPostRequestDto;
 import br.com.ifba.mapadocorreapi.endereco.entity.Endereco;
 import br.com.ifba.mapadocorreapi.itempedido.dto.ItemPedidoGetResponseDto;
 import br.com.ifba.mapadocorreapi.itempedido.entity.ItemPedido;
@@ -201,6 +202,46 @@ public class ObjectMapperUtil {
         };
 
         MODEL_MAPPER.addConverter(pedidoConverter);
+
+        // EnderecoPostRequestDto -> Endereco
+        Converter<EnderecoPostRequestDto, Endereco> enderecoConverter = context -> {
+
+            EnderecoPostRequestDto source = context.getSource();
+
+            if (source == null) {
+                return null;
+            }
+
+            Endereco endereco = new Endereco();
+
+            endereco.setRua(source.getRua());
+            endereco.setBairro(source.getBairro());
+            endereco.setCidade(source.getCidade());
+            endereco.setEstado(source.getEstado());
+
+            if (source.getClienteId() != null) {
+
+                Cliente cliente = new Cliente();
+                cliente.setId(source.getClienteId());
+
+                endereco.setCliente(cliente);
+
+            }
+
+            if (source.getNegocioId() != null) {
+
+                Negocio negocio = new Negocio();
+                negocio.setId(source.getNegocioId());
+
+                endereco.setNegocio(negocio);
+
+            }
+
+            return endereco;
+
+        };
+
+        MODEL_MAPPER.addConverter(enderecoConverter);
 
     }
 
