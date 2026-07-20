@@ -25,5 +25,6 @@ public class PedidoGetResponseDto {
     private String cidadeEntrega;
     private StatusPagamento statusPagamento;
     private MetodoPagamento metodoPagamento;
+    private BigDecimal troco;
     private List<ItemPedidoGetResponseDto> itens;
 }

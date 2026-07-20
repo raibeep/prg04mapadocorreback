@@ -45,6 +45,8 @@ public class Pedido extends PersistenceEntity {
     @Enumerated(EnumType.STRING)
     private StatusPagamento statusPagamento;
 
+    private BigDecimal troco;
+
     @OneToMany(mappedBy = "pedido",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
