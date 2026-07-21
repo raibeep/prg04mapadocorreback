@@ -10,6 +10,7 @@ import br.com.ifba.mapadocorreapi.endereco.dto.EnderecoGetResponseDto;
 import br.com.ifba.mapadocorreapi.endereco.dto.EnderecoPostRequestDto;
 import br.com.ifba.mapadocorreapi.endereco.entity.Endereco;
 import br.com.ifba.mapadocorreapi.itempedido.dto.ItemPedidoGetResponseDto;
+import br.com.ifba.mapadocorreapi.itempedido.dto.ItemPedidoPostRequestDto;
 import br.com.ifba.mapadocorreapi.itempedido.entity.ItemPedido;
 import br.com.ifba.mapadocorreapi.negocio.dto.NegocioGetResponseDto;
 import br.com.ifba.mapadocorreapi.negocio.entity.Negocio;
@@ -126,12 +127,35 @@ public class ObjectMapperUtil {
 
                 Pedido pedido = new Pedido();
 
+                pedido.setMetodoPagamento(source.getMetodoPagamento());
+                pedido.setTroco(source.getTroco());
+
                 if (source.getEnderecoId() != null) {
 
                     Endereco endereco = new Endereco();
                     endereco.setId(source.getEnderecoId());
 
                     pedido.setEndereco(endereco);
+
+                }
+
+                if (source.getItens() != null) {
+
+                    for (ItemPedidoPostRequestDto itemDto : source.getItens()) {
+
+                        ItemPedido item = new ItemPedido();
+
+                        item.setQuantidade(itemDto.getQuantidade());
+
+                        Produto produto = new Produto();
+                        produto.setId(itemDto.getProdutoId());
+
+                        item.setProduto(produto);
+                        item.setPedido(pedido);
+
+                        pedido.getItens().add(item);
+
+                    }
 
                 }
 
