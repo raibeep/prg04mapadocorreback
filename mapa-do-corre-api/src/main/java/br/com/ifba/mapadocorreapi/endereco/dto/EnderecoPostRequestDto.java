@@ -8,8 +8,16 @@ import lombok.Setter;
 @Setter
 public class EnderecoPostRequestDto {
 
+    @NotBlank(message = "O CEP é obrigatório.")
+    private String cep;
+
     @NotBlank(message = "A rua é obrigatória.")
     private String rua;
+
+    @NotBlank(message = "O número é obrigatório.")
+    private String numero;
+
+    private String complemento;
 
     @NotBlank(message = "O bairro é obrigatório.")
     private String bairro;

@@ -10,7 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +19,10 @@ import java.util.List;
 @Setter
 @Entity
 public class Endereco extends PersistenceEntity {
+    private String cep;
     private String rua;
+    private String numero;
+    private String complemento;
     private String bairro;
     private String cidade;
     private String estado;

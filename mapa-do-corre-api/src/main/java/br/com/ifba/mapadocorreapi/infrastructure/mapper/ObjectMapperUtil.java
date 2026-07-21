@@ -214,7 +214,10 @@ public class ObjectMapperUtil {
 
             Endereco endereco = new Endereco();
 
+            endereco.setCep(source.getCep());
             endereco.setRua(source.getRua());
+            endereco.setNumero(source.getNumero());
+            endereco.setComplemento(source.getComplemento());
             endereco.setBairro(source.getBairro());
             endereco.setCidade(source.getCidade());
             endereco.setEstado(source.getEstado());
