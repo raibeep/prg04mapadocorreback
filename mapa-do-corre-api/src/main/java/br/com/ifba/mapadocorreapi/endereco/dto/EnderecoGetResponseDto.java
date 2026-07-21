@@ -17,4 +17,5 @@ public class EnderecoGetResponseDto {
     private String estado;
     private Long negocioId;
     private String nomeNegocio;
+    private Long clienteId;
 }

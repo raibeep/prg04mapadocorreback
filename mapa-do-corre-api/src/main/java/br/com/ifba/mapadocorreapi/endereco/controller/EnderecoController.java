@@ -23,22 +23,15 @@ public class EnderecoController implements EnderecoIController {
     private final ObjectMapperUtil objectMapperUtil;
 
     @Override
-    @PostMapping(
-            path = "/save",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
+    @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> save(@RequestBody @Valid EnderecoPostRequestDto dto) {
 
         Endereco endereco = objectMapperUtil.map(dto, Endereco.class);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(
-                        objectMapperUtil.map(
-                                enderecoService.save(endereco),
-                                EnderecoGetResponseDto.class
-                        )
-                );
+                .body(objectMapperUtil.map(enderecoService.save(endereco),
+                        EnderecoGetResponseDto.class));
     }
 
     @Override
