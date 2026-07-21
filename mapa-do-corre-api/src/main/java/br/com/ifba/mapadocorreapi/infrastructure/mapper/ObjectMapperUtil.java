@@ -14,15 +14,15 @@ import br.com.ifba.mapadocorreapi.itempedido.entity.ItemPedido;
 import br.com.ifba.mapadocorreapi.negocio.dto.NegocioGetResponseDto;
 import br.com.ifba.mapadocorreapi.negocio.entity.Negocio;
 import br.com.ifba.mapadocorreapi.pedido.dto.PedidoGetResponseDto;
+import br.com.ifba.mapadocorreapi.pedido.dto.PedidoPostRequestDto;
 import br.com.ifba.mapadocorreapi.pedido.entity.Pedido;
 import br.com.ifba.mapadocorreapi.produto.dto.ProdutoGetResponseDto;
 import br.com.ifba.mapadocorreapi.produto.entity.Produto;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.modelmapper.spi.MappingContext;
 import org.springframework.stereotype.Component;
-import br.com.ifba.mapadocorreapi.pedido.dto.PedidoPostRequestDto;
-import org.modelmapper.Converter;
 
 import java.util.Collection;
 import java.util.List;
@@ -113,26 +113,31 @@ public class ObjectMapperUtil {
         });
 
         // PedidoPostRequestDto -> Pedido
-        Converter<PedidoPostRequestDto, Pedido> pedidoConverter = context -> {
+        Converter<PedidoPostRequestDto, Pedido> pedidoConverter = new Converter<PedidoPostRequestDto, Pedido>() {
 
-            PedidoPostRequestDto source = context.getSource();
+            @Override
+            public Pedido convert(MappingContext<PedidoPostRequestDto, Pedido> context) {
 
-            if (source == null) {
-                return null;
+                PedidoPostRequestDto source = context.getSource();
+
+                if (source == null) {
+                    return null;
+                }
+
+                Pedido pedido = new Pedido();
+
+                if (source.getEnderecoId() != null) {
+
+                    Endereco endereco = new Endereco();
+                    endereco.setId(source.getEnderecoId());
+
+                    pedido.setEndereco(endereco);
+
+                }
+
+                return pedido;
+
             }
-
-            Pedido pedido = new Pedido();
-
-            if (source.getEnderecoId() != null) {
-
-                Endereco endereco = new Endereco();
-                endereco.setId(source.getEnderecoId());
-
-                pedido.setEndereco(endereco);
-
-            }
-
-            return pedido;
 
         };
 
@@ -149,6 +154,7 @@ public class ObjectMapperUtil {
                 if (source == null) {
                     return null;
                 }
+
                 Endereco endereco = new Endereco();
 
                 endereco.setCep(source.getCep());
@@ -175,6 +181,7 @@ public class ObjectMapperUtil {
         };
 
         MODEL_MAPPER.addConverter(enderecoConverter);
+
     }
 
     public <Input, Output> Output map(final Input object, final Class<Output> clazz) {
