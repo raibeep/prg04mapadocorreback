@@ -26,7 +26,7 @@ import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
-public class ClienteService implements ClienteIService{
+public class ClienteService implements ClienteIService {
     private final ClienteRepository clienteRepository;
     private final PerfilRepository perfilRepository;
     private final UsuarioRepository usuarioRepository;
@@ -38,6 +38,7 @@ public class ClienteService implements ClienteIService{
     @Override
     @Transactional
     public Cliente save(Cliente cliente) {
+
         if (cliente.getUsuario() == null) {
             throw new BusinessException("Dados de usuário não informados.");
         }
@@ -46,14 +47,23 @@ public class ClienteService implements ClienteIService{
             throw new BusinessException("Email já cadastrado.");
         }
 
-        // Criptografa a senha antes de salvar
-        cliente.getUsuario().setSenha(passwordEncoder.encode(cliente.getUsuario().getSenha()));
+        cliente.getUsuario().setSenha(
+                passwordEncoder.encode(cliente.getUsuario().getSenha())
+        );
 
-        Perfil perfil = new Perfil();
-        perfil.setNivelAcesso(TiposPerfil.CLIENTE);
-        perfil = perfilRepository.findByNivelAcesso(TiposPerfil.CLIENTE)
+        Perfil perfil = perfilRepository.findByNivelAcesso(TiposPerfil.CLIENTE)
                 .orElseThrow(() -> new BusinessException("Perfil não encontrado."));
+
         cliente.getUsuario().setPerfil(perfil);
+
+
+        // mantém o lado dono da relação
+        if (cliente.getEnderecos() != null) {
+            cliente.getEnderecos().forEach(endereco -> {
+                endereco.setCliente(cliente);
+            });
+        }
+
 
         return clienteRepository.save(cliente);
     }

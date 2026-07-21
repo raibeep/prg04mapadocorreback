@@ -16,24 +16,6 @@ public class EnderecoService implements EnderecoIService {
 
     @Override
     public Endereco save(Endereco endereco) {
-        if (endereco.getCliente() != null && endereco.getEmpresario() != null) {
-            throw new BusinessException("O endereço não pode pertencer ao cliente e ao empresário ao mesmo tempo.");
-        }
-
-        if (endereco.getCliente() != null && endereco.getNegocio() != null) {
-            throw new BusinessException("O endereço não pode pertencer ao cliente e ao negócio ao mesmo tempo.");
-        }
-
-        if (endereco.getEmpresario() != null && endereco.getNegocio() != null) {
-            throw new BusinessException("O endereço não pode pertencer ao empresário e ao negócio ao mesmo tempo.");
-        }
-
-        if (endereco.getCliente() == null &&
-                endereco.getEmpresario() == null &&
-                endereco.getNegocio() == null) {
-
-            throw new BusinessException("O endereço deve pertencer a um cliente, empresário ou negócio.");
-        }
         return enderecoRepository.save(endereco);
     }
 

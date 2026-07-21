@@ -28,7 +28,5 @@ public class EnderecoPostRequestDto {
     @NotBlank(message = "O estado é obrigatório.")
     private String estado;
 
-    private Long negocioId;
-
     private Long clienteId;
 }

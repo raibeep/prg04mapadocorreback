@@ -107,20 +107,7 @@ public class ObjectMapperUtil {
 
                 });
 
-        MODEL_MAPPER.typeMap(Endereco.class, EnderecoGetResponseDto.class)
-                .addMappings(mapper -> {
-
-                    mapper.map(
-                            src -> src.getNegocio().getId(),
-                            EnderecoGetResponseDto::setNegocioId
-                    );
-
-                    mapper.map(
-                            src -> src.getNegocio().getNome(),
-                            EnderecoGetResponseDto::setNomeNegocio
-                    );
-
-                });
+        MODEL_MAPPER.typeMap(Endereco.class, EnderecoGetResponseDto.class);
 
         MODEL_MAPPER.typeMap(Avaliacao.class, AvaliacaoGetResponseDto.class)
                 .addMappings(mapper -> {
@@ -231,20 +218,9 @@ public class ObjectMapperUtil {
 
             }
 
-            if (source.getNegocioId() != null) {
-
-                Negocio negocio = new Negocio();
-                negocio.setId(source.getNegocioId());
-
-                endereco.setNegocio(negocio);
-
-            }
-
             return endereco;
 
         };
-
-        MODEL_MAPPER.addConverter(enderecoConverter);
 
     }
 

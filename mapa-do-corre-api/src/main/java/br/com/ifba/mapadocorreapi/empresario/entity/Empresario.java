@@ -25,7 +25,4 @@ public class Empresario extends Pessoa {
 
     @OneToOne(mappedBy = "dono", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Negocio negocio;
-
-    @OneToMany(mappedBy = "empresario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Endereco> enderecos = new ArrayList<>();
 }

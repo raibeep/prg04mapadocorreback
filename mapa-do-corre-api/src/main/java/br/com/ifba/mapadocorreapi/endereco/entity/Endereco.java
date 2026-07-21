@@ -1,6 +1,5 @@
 package br.com.ifba.mapadocorreapi.endereco.entity;
 import br.com.ifba.mapadocorreapi.cliente.entity.Cliente;
-import br.com.ifba.mapadocorreapi.empresario.entity.Empresario;
 import br.com.ifba.mapadocorreapi.infrastructure.persistence.entity.PersistenceEntity;
 import br.com.ifba.mapadocorreapi.negocio.entity.Negocio;
 import br.com.ifba.mapadocorreapi.pedido.entity.Pedido;
@@ -13,12 +12,13 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity
 @Getter
 @Setter
-@Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class Endereco extends PersistenceEntity {
+
     private String cep;
     private String rua;
     private String numero;
@@ -31,11 +31,7 @@ public class Endereco extends PersistenceEntity {
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "empresario_id")
-    private Empresario empresario;
-
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "negocio_id")
     private Negocio negocio;
 
