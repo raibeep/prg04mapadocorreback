@@ -129,6 +129,8 @@ public class ItemPedidoService implements ItemPedidoIService{
     @Transactional
     public ItemPedido confirmarItem(Long id) {
 
+        System.out.println("ID recebido: " + id);
+
         ItemPedido item = buscarEValidarDono(id);
 
         if (item.getStatus() != StatusItemPedido.PENDENTE) {
@@ -137,7 +139,11 @@ public class ItemPedidoService implements ItemPedidoIService{
 
         item.setStatus(StatusItemPedido.CONFIRMADO);
 
-        return itemPedidoRepository.save(item);
+        ItemPedido salvo = itemPedidoRepository.save(item);
+
+        atualizarStatusPedido(salvo.getPedido());
+
+        return salvo;
     }
 
     @Override
@@ -152,7 +158,33 @@ public class ItemPedidoService implements ItemPedidoIService{
 
         item.setStatus(StatusItemPedido.CANCELADO);
 
-        return itemPedidoRepository.save(item);
+        ItemPedido salvo = itemPedidoRepository.save(item);
+
+        atualizarStatusPedido(salvo.getPedido());
+
+        return salvo;
+    }
+
+    private void atualizarStatusPedido(Pedido pedido) {
+
+        List<ItemPedido> itens = itemPedidoRepository.findByPedido(pedido);
+
+        boolean todosCancelados = itens.stream()
+                .allMatch(i -> i.getStatus() == StatusItemPedido.CANCELADO);
+
+        boolean existePendente = itens.stream()
+                .anyMatch(i -> i.getStatus() == null || i.getStatus() == StatusItemPedido.PENDENTE);
+
+        if (todosCancelados) {
+            pedido.setStatus(StatusPedido.CANCELADO);
+        } else if (!existePendente) {
+            pedido.setStatus(StatusPedido.CONFIRMADO);
+        } else {
+            pedido.setStatus(StatusPedido.PENDENTE);
+        }
+
+        pedidoRepository.save(pedido);
+
     }
 
     private ItemPedido buscarEValidarDono(Long id) {
@@ -162,7 +194,13 @@ public class ItemPedidoService implements ItemPedidoIService{
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+        System.out.println("Authentication: " + authentication);
+        System.out.println("Principal: " + authentication.getPrincipal());
+        System.out.println("Name: " + authentication.getName());
+
         String email = authentication.getName();
+
+        System.out.println("Email recebido: " + email);
 
         Usuario usuario = usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new BusinessException("Usuário não encontrado."));
