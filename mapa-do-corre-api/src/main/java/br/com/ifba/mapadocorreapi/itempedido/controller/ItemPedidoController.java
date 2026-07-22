@@ -79,4 +79,25 @@ public class ItemPedidoController implements ItemPedidoIController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/negocio/{negocioId}")
+    public ResponseEntity<?> findByNegocio(@PathVariable Long negocioId) {
+
+        return ResponseEntity.ok(objectMapperUtil.mapAll(itemPedidoService.findByNegocio(negocioId),
+                        ItemPedidoGetResponseDto.class));
+    }
+
+    @PatchMapping("/{id}/confirmar")
+    public ResponseEntity<?> confirmar(@PathVariable Long id) {
+
+        return ResponseEntity.ok(objectMapperUtil.map(itemPedidoService.confirmarItem(id),
+                        ItemPedidoGetResponseDto.class));
+    }
+
+    @PatchMapping("/{id}/cancelar")
+    public ResponseEntity<?> cancelar(@PathVariable Long id) {
+
+        return ResponseEntity.ok(objectMapperUtil.map(itemPedidoService.cancelarItem(id),
+                        ItemPedidoGetResponseDto.class));
+    }
 }

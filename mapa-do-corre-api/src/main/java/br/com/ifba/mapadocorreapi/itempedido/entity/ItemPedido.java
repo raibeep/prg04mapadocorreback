@@ -1,5 +1,6 @@
 package br.com.ifba.mapadocorreapi.itempedido.entity;
 
+import br.com.ifba.mapadocorreapi.enums.StatusItemPedido;
 import br.com.ifba.mapadocorreapi.infrastructure.persistence.entity.PersistenceEntity;
 import br.com.ifba.mapadocorreapi.pedido.entity.Pedido;
 import br.com.ifba.mapadocorreapi.produto.entity.Produto;
@@ -23,6 +24,9 @@ public class ItemPedido extends PersistenceEntity {
     // preço travado no momento da compra, mesmo que o Produto mude de preço depois
     @Column(precision = 10, scale = 2, nullable = false)
     private BigDecimal precoUnitario;
+
+    @Enumerated(EnumType.STRING)
+    private StatusItemPedido status = StatusItemPedido.PENDENTE;
 
     @ManyToOne
     @JoinColumn(name = "pedido_id", nullable = false)

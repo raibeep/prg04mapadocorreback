@@ -67,6 +67,12 @@ public class ObjectMapperUtil {
 
             mapper.map(src -> src.getPedido().getId(), ItemPedidoGetResponseDto::setPedidoId);
 
+            mapper.map(src -> src.getPedido().getCriadoEm(), ItemPedidoGetResponseDto::setCriadoEm);
+
+            mapper.map(src -> src.getPedido().getCliente().getNome(), ItemPedidoGetResponseDto::setClienteNome);
+
+            mapper.map(src -> src.getPedido().getEndereco().getCidade(), ItemPedidoGetResponseDto::setEnderecoResumo);
+
             mapper.map(src -> src.getProduto().getId(), ItemPedidoGetResponseDto::setProdutoId);
 
             mapper.map(src -> src.getProduto().getNome(), ItemPedidoGetResponseDto::setNomeProduto);
