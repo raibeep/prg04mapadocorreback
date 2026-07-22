@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -180,5 +181,25 @@ public class PedidoService implements PedidoIService {
         pedido.setValorTotal(total);
 
         pedidoRepository.save(pedido);
+    }
+
+    @Override
+    public List<Pedido> findMeusPedidos() {
+
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+
+        String email = authentication.getName();
+
+        Usuario usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new BusinessException("Usuário não encontrado."));
+
+        Cliente cliente = clienteRepository.findByUsuarioId(usuario.getId())
+                .orElseThrow(() ->
+                        new BusinessException("Cliente não encontrado."));
+
+        return pedidoRepository.findByClienteIdOrderByCriadoEmDesc(cliente.getId());
+
     }
 }

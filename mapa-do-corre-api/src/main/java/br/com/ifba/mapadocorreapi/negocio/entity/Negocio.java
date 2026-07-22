@@ -5,7 +5,11 @@ import br.com.ifba.mapadocorreapi.endereco.entity.Endereco;
 import br.com.ifba.mapadocorreapi.infrastructure.persistence.entity.PersistenceEntity;
 import br.com.ifba.mapadocorreapi.produto.entity.Produto;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 
 import java.util.ArrayList;
 import java.util.Date;

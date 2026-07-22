@@ -71,4 +71,12 @@ public class PedidoController implements PedidoIController {
 
         return ResponseEntity.ok(objectMapperUtil.map(pedidoService.cancelarPedido(id), PedidoGetResponseDto.class));
     }
+
+    @GetMapping("/meus-pedidos")
+    public ResponseEntity<?> meusPedidos() {
+
+        return ResponseEntity.ok(objectMapperUtil.mapAll(pedidoService.findMeusPedidos(),
+                PedidoGetResponseDto.class));
+
+    }
 }

@@ -4,6 +4,8 @@ import br.com.ifba.mapadocorreapi.pedido.entity.Pedido;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface PedidoIService {
     Pedido save(Pedido pedido);
 
@@ -20,4 +22,6 @@ public interface PedidoIService {
     void delete(Long id);
 
     void atualizarValorTotal(Pedido pedido);
+
+    List<Pedido> findMeusPedidos();
 }
