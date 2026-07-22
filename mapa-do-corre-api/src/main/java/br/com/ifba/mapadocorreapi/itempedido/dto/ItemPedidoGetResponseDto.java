@@ -15,4 +15,5 @@ public class ItemPedidoGetResponseDto {
     private Long produtoId;
     private String nomeProduto;
     private Long pedidoId;
+    private String fotoProduto;
 }

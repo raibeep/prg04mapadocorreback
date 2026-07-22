@@ -71,6 +71,8 @@ public class ObjectMapperUtil {
 
             mapper.map(src -> src.getProduto().getNome(), ItemPedidoGetResponseDto::setNomeProduto);
 
+            mapper.map(src -> src.getProduto().getFoto(), ItemPedidoGetResponseDto::setFotoProduto);
+
         });
 
         MODEL_MAPPER.typeMap(Endereco.class, EnderecoGetResponseDto.class).addMappings(mapper -> {
