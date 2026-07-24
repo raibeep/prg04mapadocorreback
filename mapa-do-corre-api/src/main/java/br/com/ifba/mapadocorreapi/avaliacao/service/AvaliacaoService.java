@@ -46,4 +46,9 @@ public class AvaliacaoService implements AvaliacaoIService{
 
         avaliacaoRepository.delete(avaliacao);
     }
+
+    @Override
+    public Page<Avaliacao> findByNegocioId(Long negocioId, Pageable pageable) {
+        return avaliacaoRepository.findByNegocioId(negocioId, pageable);
+    }
 }

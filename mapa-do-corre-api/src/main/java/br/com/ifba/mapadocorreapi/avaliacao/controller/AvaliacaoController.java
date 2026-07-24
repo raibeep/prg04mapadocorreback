@@ -53,4 +53,12 @@ public class AvaliacaoController implements AvaliacaoIController{
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping(path = "/negocio/{negocioId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Page<AvaliacaoGetResponseDto>> findByNegocio(@PathVariable Long negocioId, Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                avaliacaoService.findByNegocioId(negocioId, pageable)
+                        .map(a -> objectMapperUtil.map(a, AvaliacaoGetResponseDto.class))
+        );
+    }
 }

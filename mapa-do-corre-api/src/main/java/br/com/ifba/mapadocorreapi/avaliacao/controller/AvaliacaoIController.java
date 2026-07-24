@@ -19,4 +19,6 @@ public interface AvaliacaoIController {
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid AvaliacaoPostRequestDto avaliacaoPostRequestDto);
 
     public ResponseEntity<?> delete(@PathVariable Long id);
+
+    public ResponseEntity<Page<AvaliacaoGetResponseDto>> findByNegocio(@PathVariable Long negocioId, Pageable pageable);
 }

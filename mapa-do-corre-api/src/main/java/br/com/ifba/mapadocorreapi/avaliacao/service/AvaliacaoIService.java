@@ -14,4 +14,6 @@ public interface AvaliacaoIService {
     Avaliacao update (Long id, Avaliacao avaliacao);
 
     void delete(Long id);
+
+    Page<Avaliacao> findByNegocioId(Long negocioId, Pageable pageable);
 }
