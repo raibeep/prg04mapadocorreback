@@ -29,6 +29,12 @@ public class AvaliacaoGetResponseDto {
     @JsonProperty("autorEmail")
     private String autorEmail;
 
+    @JsonProperty("autorNome")
+    private String autorNome; // Recebe o nome do cliente no React
+
+    @JsonProperty("negocioId")
+    private Long negocioId;
+
     @JsonProperty("negocioNome")
     private String negocioNome;
 }
