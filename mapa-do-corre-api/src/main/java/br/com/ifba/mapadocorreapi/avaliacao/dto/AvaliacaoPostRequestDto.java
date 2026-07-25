@@ -21,4 +21,8 @@ public class AvaliacaoPostRequestDto {
 
     @JsonProperty("comentario")
     private String comentario;
+
+    @JsonProperty("negocioId")
+    @NotNull(message = "O negócio é obrigatório.")
+    private Long negocioId;
 }

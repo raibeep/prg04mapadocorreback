@@ -1,6 +1,7 @@
 package br.com.ifba.mapadocorreapi.infrastructure.mapper;
 
 import br.com.ifba.mapadocorreapi.avaliacao.dto.AvaliacaoGetResponseDto;
+import br.com.ifba.mapadocorreapi.avaliacao.dto.AvaliacaoPostRequestDto;
 import br.com.ifba.mapadocorreapi.avaliacao.entity.Avaliacao;
 import br.com.ifba.mapadocorreapi.cliente.dto.ClienteGetResponseDto;
 import br.com.ifba.mapadocorreapi.cliente.entity.Cliente;
@@ -152,6 +153,26 @@ public class ObjectMapperUtil {
         };
 
         MODEL_MAPPER.addConverter(enderecoConverter);
+
+        Converter<AvaliacaoPostRequestDto, Avaliacao> avaliacaoConverter = context -> {
+            AvaliacaoPostRequestDto source = context.getSource();
+            if (source == null) return null;
+
+            Avaliacao avaliacao = new Avaliacao();
+
+            avaliacao.setNota(source.getNota());
+            avaliacao.setComentario(source.getComentario());
+
+            if (source.getNegocioId() != null) {
+                Negocio negocio = new Negocio();
+                negocio.setId(source.getNegocioId());
+                avaliacao.setNegocio(negocio);
+            }
+
+            return avaliacao;
+        };
+
+        MODEL_MAPPER.addConverter(avaliacaoConverter);
     }
 
     public <Input, Output> Output map(final Input object, final Class<Output> clazz) {

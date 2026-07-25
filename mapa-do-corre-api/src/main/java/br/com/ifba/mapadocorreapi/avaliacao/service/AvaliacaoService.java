@@ -1,16 +1,25 @@
 package br.com.ifba.mapadocorreapi.avaliacao.service;
 
 import br.com.ifba.mapadocorreapi.avaliacao.dto.AvaliacaoGetResponseDto;
+import br.com.ifba.mapadocorreapi.avaliacao.dto.AvaliacaoPostRequestDto;
 import br.com.ifba.mapadocorreapi.avaliacao.entity.Avaliacao;
 import br.com.ifba.mapadocorreapi.avaliacao.repository.AvaliacaoRepository;
 import br.com.ifba.mapadocorreapi.cliente.repository.ClienteRepository;
 import br.com.ifba.mapadocorreapi.infrastructure.exception.BusinessException;
 import br.com.ifba.mapadocorreapi.infrastructure.mapper.ObjectMapperUtil;
+import br.com.ifba.mapadocorreapi.negocio.entity.Negocio;
+import br.com.ifba.mapadocorreapi.negocio.repository.NegocioRepository;
+import br.com.ifba.mapadocorreapi.usuario.entity.Usuario;
+import br.com.ifba.mapadocorreapi.usuario.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 @RequiredArgsConstructor
 @Service
@@ -18,9 +27,26 @@ public class AvaliacaoService implements AvaliacaoIService{
 
     private final AvaliacaoRepository avaliacaoRepository;
     private final ClienteRepository clienteRepository;
+    private final UsuarioRepository usuarioRepository;
+    private final NegocioRepository negocioRepository;
     private final ObjectMapperUtil objectMapperUtil;
     @Override
+    @Transactional
     public Avaliacao save(Avaliacao avaliacao) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+
+        Usuario autor = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new BusinessException("Usuário não encontrado."));
+
+        Negocio negocio = negocioRepository.findById(avaliacao.getNegocio().getId())
+                .orElseThrow(() -> new BusinessException("Negócio não encontrado."));
+
+        avaliacao.setAutor(autor);
+        avaliacao.setNegocio(negocio);
+        avaliacao.setCriadoEm(new Date());
+
         return avaliacaoRepository.save(avaliacao);
     }
 
