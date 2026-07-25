@@ -5,6 +5,7 @@ import br.com.ifba.mapadocorreapi.avaliacao.dto.AvaliacaoPostRequestDto;
 import br.com.ifba.mapadocorreapi.avaliacao.entity.Avaliacao;
 import br.com.ifba.mapadocorreapi.avaliacao.service.AvaliacaoIService;
 import br.com.ifba.mapadocorreapi.infrastructure.mapper.ObjectMapperUtil;
+import br.com.ifba.mapadocorreapi.negocio.entity.Negocio;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,20 +18,30 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/avaliacoes")
-public class AvaliacaoController implements AvaliacaoIController{
+public class AvaliacaoController implements AvaliacaoIController {
     private final ObjectMapperUtil objectMapperUtil;
     private final AvaliacaoIService avaliacaoService;
 
     @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> save (@RequestBody @Valid AvaliacaoPostRequestDto avaliacaoPostRequestDto){
-        return ResponseEntity.status(HttpStatus.CREATED).body(objectMapperUtil.map(avaliacaoService.save((objectMapperUtil
-                        .map(avaliacaoPostRequestDto, Avaliacao.class))), AvaliacaoGetResponseDto.class));
+    public ResponseEntity<?> save(@RequestBody @Valid AvaliacaoPostRequestDto dto) {
+
+        Avaliacao avaliacao = objectMapperUtil.map(dto, Avaliacao.class);
+
+        Negocio negocio = new Negocio();
+        negocio.setId(dto.getNegocioId());
+
+        avaliacao.setNegocio(negocio);
+
+        Avaliacao salva = avaliacaoService.save(avaliacao);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(objectMapperUtil.map(salva, AvaliacaoGetResponseDto.class));
     }
 
     @GetMapping(path = "/findall", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Page<AvaliacaoGetResponseDto>> findAll(Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(avaliacaoService.findAll(pageable)
-                        .map(c -> objectMapperUtil.map(c, AvaliacaoGetResponseDto.class)));
+                .map(c -> objectMapperUtil.map(c, AvaliacaoGetResponseDto.class)));
     }
 
     @GetMapping("/findbyid/{id}") //irá buscar pelo id
@@ -39,10 +50,17 @@ public class AvaliacaoController implements AvaliacaoIController{
                 .body(objectMapperUtil.map(avaliacaoService.findById(id), AvaliacaoGetResponseDto.class));
     }
 
-    @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid AvaliacaoPostRequestDto avaliacaoPostRequestDto) {
-        avaliacaoService.update(id, objectMapperUtil.map(avaliacaoPostRequestDto, Avaliacao.class));
+    @PutMapping(value = "/update/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody @Valid AvaliacaoPostRequestDto dto) {
+
+        Avaliacao avaliacao = objectMapperUtil.map(dto, Avaliacao.class);
+
+        Negocio negocio = new Negocio();
+        negocio.setId(dto.getNegocioId());
+
+        avaliacao.setNegocio(negocio);
+
+        avaliacaoService.update(id, avaliacao);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
