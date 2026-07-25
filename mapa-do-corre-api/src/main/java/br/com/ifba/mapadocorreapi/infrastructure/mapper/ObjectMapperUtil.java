@@ -157,8 +157,12 @@ public class ObjectMapperUtil {
         MODEL_MAPPER.addConverter(enderecoConverter);
 
         Converter<AvaliacaoPostRequestDto, Avaliacao> avaliacaoConverter = context -> {
+
             AvaliacaoPostRequestDto source = context.getSource();
-            if (source == null) return null;
+
+            if (source == null) {
+                return null;
+            }
 
             Avaliacao avaliacao = new Avaliacao();
 
