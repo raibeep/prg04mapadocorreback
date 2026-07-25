@@ -22,4 +22,6 @@ public class ItemPedidoGetResponseDto {
     private String clienteNome;
     private String enderecoResumo;
     private Date criadoEm;
+    private Long negocioId;
+    private String negocioNome;
 }
