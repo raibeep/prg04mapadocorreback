@@ -130,7 +130,7 @@ public class ObjectMapperUtil {
             return pedido;
         };
 
-        MODEL_MAPPER.addConverter(pedidoConverter);
+        MODEL_MAPPER.createTypeMap(PedidoPostRequestDto.class, Pedido.class).setConverter(pedidoConverter);
 
         Converter<EnderecoPostRequestDto, Endereco> enderecoConverter = context -> {
             EnderecoPostRequestDto source = context.getSource();
@@ -154,7 +154,7 @@ public class ObjectMapperUtil {
             return endereco;
         };
 
-        MODEL_MAPPER.addConverter(enderecoConverter);
+        MODEL_MAPPER.createTypeMap(EnderecoPostRequestDto.class, Endereco.class).setConverter(enderecoConverter);
 
         Converter<AvaliacaoPostRequestDto, Avaliacao> avaliacaoConverter = context -> {
 
@@ -178,7 +178,7 @@ public class ObjectMapperUtil {
             return avaliacao;
         };
 
-        MODEL_MAPPER.addConverter(avaliacaoConverter);
+        MODEL_MAPPER.createTypeMap(AvaliacaoPostRequestDto.class, Avaliacao.class).setConverter(avaliacaoConverter);
     }
 
     public <Input, Output> Output map(final Input object, final Class<Output> clazz) {
